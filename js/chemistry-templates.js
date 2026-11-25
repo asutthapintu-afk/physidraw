@@ -194,5 +194,5 @@ TPL.splice(TPL.length-1,0,
  ['การตกผลึก','เคมี · การแยกสาร',T_crystal,'chem'],['อิเล็กโทรลิซิส CuCl₂','เคมีไฟฟ้า',T_electrolysis,'chem'],['เซลล์กัลวานิก Zn/Cu','เคมีไฟฟ้า · E° = 1.10 V',T_galvanic,'chem'],
  ['แผนภาพพลังงานของปฏิกิริยา','จลนศาสตร์ · Eₐ และ ΔH',T_energy,'chem'],['กราฟการเปลี่ยนสถานะของน้ำ','สมบัติของสาร',T_heating,'chem'],['แผนภาพเฟสของน้ำ','สมบัติของสาร',T_phase,'chem'],
  ['กลไก SN2','เคมีอินทรีย์ · ลูกศรโค้ง',T_sn2,'chem'],['ไอโซโทปของไฮโดรเจน','โครงสร้างอะตอม',T_isotopes,'chem'],['การเกิดไอออน Na⁺ / Cl⁻','โครงสร้างอะตอม',T_ions,'chem'],['รูปร่างโมเลกุล VSEPR','พันธะเคมี',T_vsepr,'chem']);
-window.__chemTpl={T_titration,T_filtration,T_distillation,T_crystal,T_electrolysis,T_galvanic,T_energy,T_heating,T_phase,T_sn2,T_isotopes,T_ions,T_vsepr,ceRich,ceParse};
+window.__chemTpl={mkEq,T_titration,T_filtration,T_distillation,T_crystal,T_electrolysis,T_galvanic,T_energy,T_heating,T_phase,T_sn2,T_isotopes,T_ions,T_vsepr,ceRich,ceParse};
 })();
