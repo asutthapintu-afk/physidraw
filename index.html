@@ -59,6 +59,28 @@ aside{background:var(--panel);min-height:0;display:flex;flex-direction:column}
 .chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:2px 9px;font-size:11.5px;color:var(--ink2)}
 .chip:hover{border-color:var(--line2)}
 .chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.stp{display:flex;align-items:center;gap:4px;flex:none}
+.stp button{width:28px;height:26px;border:1px solid var(--line2);background:#fff;border-radius:6px;padding:0;font-size:14px;line-height:1}
+.stp button:hover{background:#f6f7fb}
+.stp b{min-width:24px;text-align:center;font-variant-numeric:tabular-nums}
+.subjs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px}
+.sj{display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid var(--line);background:#fff;border-radius:9px;padding:5px 2px 4px;font-size:10.5px;font-weight:600;color:var(--ink2);transition:all .15s}
+.sj svg{color:var(--c)}
+.sj:hover{border-color:var(--c)}
+.sj.on{background:var(--c);border-color:var(--c);color:#fff}
+.sj.on svg{color:#fff}
+.item{position:relative}
+.fav{position:absolute;top:3px;right:4px;border:none;background:none;color:#cbd5e1;font-size:13px;line-height:1;padding:2px;opacity:0;transition:opacity .15s}
+.item:hover .fav,.fav.on{opacity:1}
+.fav.on{color:#f59e0b}
+.soon{margin:10px 2px;padding:12px;border:1px dashed var(--line2);border-radius:10px;background:#fafbfc;display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.soon b{color:var(--ink2);font-size:12.5px}
+.stylesw{display:flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;height:32px}
+.stylesw button{border:none;background:#fff;padding:0 10px;font-size:12px;color:var(--ink2)}
+.stylesw button.on{background:var(--ink);color:#fff}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:5px 14px;font-weight:500;color:var(--ink2)}
+.tabs button.on{background:var(--ink);border-color:var(--ink);color:#fff}
 .libbody{overflow:auto;flex:1;padding:4px 10px 16px}
 .cat{margin-top:10px}
 .cat h4{margin:6px 2px 6px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;justify-content:space-between}
@@ -192,6 +214,7 @@ footer .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:in
   <button class="btn ghost hide-sm" id="btnImg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>แทรกรูป</button>
   <button class="btn ghost hide-sm" id="btnOpen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-8l-2-3H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1z"/></svg>เปิดไฟล์</button>
   <button class="btn" id="btnNew">ใหม่</button>
+  <div class="stylesw hide-sm" id="styleSw" title="รูปแบบการแสดงผล"><button data-st="color" class="on">สี</button><button data-st="mono">ขาวดำ</button></div>
   <button class="btn pri" id="btnExport"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>ส่งออก</button>
   <input type="file" id="fileJson" accept=".json,application/json" hidden>
   <input type="file" id="fileImg" accept="image/*" hidden>
@@ -202,8 +225,9 @@ footer .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:in
     <div class="libhead">
       <div class="search">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input id="q" placeholder="ค้นหา เช่น เลนส์, resistor, สปริง">
+        <input id="q" placeholder="ค้นหา ไทย/อังกฤษ เช่น บีกเกอร์, resistor">
       </div>
+      <div class="subjs" id="subj"></div>
       <div class="chips" id="chips"></div>
     </div>
     <div class="libbody" id="libbody"></div>
@@ -252,7 +276,7 @@ footer .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:in
 <!-- Templates modal -->
 <div class="modal" id="mTpl"><div class="card">
   <div class="hd"><b>เริ่มจากแม่แบบ</b><button class="ib" data-close>✕</button></div>
-  <div class="bd"><div class="tgrid" id="tgrid"></div>
+  <div class="bd"><div id="tplTabs"></div><div class="tgrid" id="tgrid"></div>
   <p class="hint" style="margin-top:12px">การเลือกแม่แบบจะแทนที่งานปัจจุบัน — กด <code>Ctrl+Z</code> เพื่อย้อนกลับได้</p></div>
 </div></div>
 
@@ -364,7 +388,18 @@ const CATS=[
  ['lab','อุปกรณ์ห้องปฏิบัติการ','Lab equipment'],['adv','เครื่องมือขั้นสูง','Advanced instruments'],['semi','เซมิคอนดักเตอร์และอิเล็กทรอนิกส์','Semiconductors'],['modern','ฟิสิกส์ยุคใหม่','Modern physics'],['life','คน สัตว์ และต้นไม้','People & nature'],
  ['mat','วัสดุและสถานะของแข็ง','Materials'],['gen','รูปทรงทั่วไป','General']];
 const LIB=[],DEF={};
-function def(cat,key,name,en,w,h,o,draw){const d={cat,key,name,en,w,h,stroke:o.s||'#1f2937',fill:o.f===undefined?'none':o.f,sw:o.sw||2,label:o.label||'',lp:o.lp||'bottom',ls:o.ls||'text',al:o.al||'',draw};LIB.push(d);DEF[key]=d;}
+/* Subject (สาขาวิชา) registry. Categories map to a subject; 'shared' categories appear under every subject. */
+const SUBJ=[['phys','ฟิสิกส์','Physics','#2563eb','<path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>'],
+ ['chem','เคมี','Chemistry','#9333ea','<path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/><path d="M7 15h10"/>'],
+ ['bio','ชีววิทยา','Biology','#16a34a','<path d="M5 19c8 0 14-6 14-14C11 5 5 11 5 19z"/><path d="M5 19L14 10"/>'],
+ ['astro','ดาราศาสตร์','Astronomy','#4f46e5','<circle cx="12" cy="12" r="5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.5" transform="rotate(-20 12 12)"/>']];
+const CAT_SUBJ={gen:'shared',life:'shared'};
+const catSubj=c=>CAT_SUBJ[c]||'phys';
+let libSubj='phys',libStore={fav:[],recent:[]};
+try{libStore=Object.assign(libStore,JSON.parse(localStorage.getItem('physidraw.lib')||'{}'));}catch(e){}
+function saveLibStore(){try{localStorage.setItem('physidraw.lib',JSON.stringify(libStore));}catch(e){}}
+function pushRecent(k){if(!DEF[k])return;libStore.recent=[k,...libStore.recent.filter(x=>x!==k)].slice(0,9);saveLibStore();}
+function def(cat,key,name,en,w,h,o,draw){const d={cat,key,name,en,w,h,stroke:o.s||'#1f2937',fill:o.f===undefined?'none':o.f,sw:o.sw||2,label:o.label||'',lp:o.lp||'bottom',ls:o.ls||'text',al:o.al||'',lv:o.lv,liq:o.liq,tag:o.tag,liquid:o.lv!==undefined,tagged:o.tag!==undefined,make:o.make,draw};LIB.push(d);DEF[key]=d;}
 const meter=sym=>p=>ln('M0,20H22M58,20H80',p)+ci(40,20,18,p)+tx(40,21,sym,18,p.s,{b:1});
 
 /* Optics */
@@ -795,9 +830,11 @@ const LP={
  wave:  {n:'คลื่น / โฟตอน',kind:'wave',he:true,stroke:'#7c3aed',sw:2},
  dashed:{n:'เส้นประ / แกน',kind:'straight',dash:'dash',stroke:'#64748b',sw:1.5},
  measure:{n:'ไม้วัดระยะ',kind:'measure',stroke:'#0f766e',sw:1.5},
+ leader:{n:'เส้นชี้ป้ายกำกับ',kind:'straight',dotS:true,stroke:'#475569',sw:1.3},
 };
 const ICON={
  select:'<path d="M5 3l14 8-6 2-3 6z"/>',
+ leader:'<circle cx="5" cy="19" r="2" fill="currentColor"/><path d="M6.5 17.5L14 10h7"/>',
  measure:'<path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
  angle:'<path d="M20 19H4L15 5"/><path d="M10 19a6 6 0 0 0-1.5-4"/>',
  graph:'<path d="M3 3v18h18"/><path d="M6 15c3-9 5-9 7-3s4 4 7-6"/>',
@@ -822,7 +859,11 @@ const stage=$('#stage'), vp=$('#viewport'), content=$('#content'), overlay=$('#o
 const GRID=20, SNAP=10;
 const uid=()=>'o'+Math.random().toString(36).slice(2,9);
 const byId=id=>doc.objects.find(o=>o.id===id);
-const isBox=o=>o&&(o.type==='shape'||o.type==='image'||o.type==='graph');
+/* Module registries (Phase 1 architecture). Subject modules (js/chemistry.js, …) register here.
+   TYPES[type]   = {name, box, svg(o,exp), aabb?(o), move?(o,dx,dy), panel?(o), anchors?, afterResize?(o,orig), onProp?(o,p,v), act?(o,name,btn)}
+   LINEKINDS[k]  = {name, svg(o,exp), panel?(o)}                                                                                         */
+const TYPES={},LINEKINDS={};
+const isBox=o=>o&&(o.type==='shape'||o.type==='image'||o.type==='graph'||!!(TYPES[o.type]&&TYPES[o.type].box));
 const selObjs=()=>sel.map(byId).filter(Boolean);
 const snapV=v=>ui.snap?Math.round(v/SNAP)*SNAP:v;
 function newDoc(){return {v:1,name:'ไดอะแกรมใหม่',w:1200,h:700,bg:'#ffffff',objects:[]};}
@@ -831,7 +872,7 @@ function newDoc(){return {v:1,name:'ไดอะแกรมใหม่',w:1200
 function mkShape(key,cx,cy,o={}){const d=DEF[key];const w=o.w||d.w,h=o.h||d.h;
   return Object.assign({id:uid(),type:'shape',key,x:cx-w/2,y:cy-h/2,w,h,rot:0,fh:false,fv:false,stroke:d.stroke,fill:d.fill,sw:d.sw,op:1,label:d.label,lp:d.lp,ls:d.ls,lsz:16,lc:'#111827'},o,{w,h,x:o.x!==undefined?o.x:cx-w/2,y:o.y!==undefined?o.y:cy-h/2});}
 function mkLine(preset,x1,y1,x2,y2,o={}){const p=LP[preset]||LP.line;
-  const l={id:uid(),type:'line',kind:p.kind,x1,y1,x2,y2,hs:!!p.hs,he:!!p.he,mid:!!p.mid,dash:p.dash||'solid',elbow:'hv',stroke:p.stroke,sw:p.sw,op:1,label:'',ls:'math',lsz:18,lc:p.stroke==='#64748b'?'#334155':p.stroke,lo:1};
+  const l={id:uid(),type:'line',kind:p.kind,x1,y1,x2,y2,hs:!!p.hs,he:!!p.he,mid:!!p.mid,dotS:!!p.dotS,dash:p.dash||'solid',elbow:'hv',stroke:p.stroke,sw:p.sw,op:1,label:'',ls:'math',lsz:18,lc:p.stroke==='#64748b'?'#334155':p.stroke,lo:1};
   if(p.kind==='curve'){const mx=(x1+x2)/2,my=(y1+y2)/2;l.cx=mx;l.cy=my-40;}
   return Object.assign(l,o);}
 function mkText(text,x,y,o={}){return Object.assign({id:uid(),type:'text',text,x,y,size:18,color:'#111827',bold:false,italic:false,font:'sans',align:'center',rot:0},o);}
@@ -858,7 +899,7 @@ function estTextBox(o){const lines=String(o.text).split('\n');const mx=Math.max(
 const rot=(x,y,a)=>{const c=Math.cos(a),s=Math.sin(a);return [x*c-y*s,x*s+y*c];};
 function boxCorners(o){const cx=o.x+o.w/2,cy=o.y+o.h/2,a=(o.rot||0)*DEG;return [[-1,-1],[1,-1],[1,1],[-1,1]].map(([sx,sy])=>{const[x,y]=rot(sx*o.w/2,sy*o.h/2,a);return[cx+x,cy+y];});}
 function textBox(o){return tcache[o.id]||estTextBox(o);}
-function aabb(o){let pts;
+function aabb(o){let pts;if(TYPES[o.type]&&TYPES[o.type].aabb)return TYPES[o.type].aabb(o);
   if(isBox(o))pts=boxCorners(o);
   else if(o.type==='text'){const b=textBox(o),a=(o.rot||0)*DEG;pts=[[b.x,b.y],[b.x+b.w,b.y],[b.x+b.w,b.y+b.h],[b.x,b.y+b.h]].map(([x,y])=>{const[u,v]=rot(x,y,a);return[o.x+u,o.y+v];});}
   else if(o.type==='angle'){const g=angleGeom(o),r=o.r||36,lr=r+10+(o.lsz||15)*1.6,am=g.a1+g.d/2;pts=[[o.vx,o.vy],[o.x1,o.y1],[o.x2,o.y2],[o.vx+lr*Math.cos(am)-30,o.vy+lr*Math.sin(am)],[o.vx+lr*Math.cos(am)+30,o.vy+lr*Math.sin(am)]];}
@@ -868,7 +909,7 @@ function unionBox(objs){if(!objs.length)return null;const bs=objs.map(aabb);retu
 const ANC={l:[-1,0],r:[1,0],t:[0,-1],b:[0,1],c:[0,0]};
 function anchorPos(o,a){const[sx,sy]=ANC[a]||[0,0];const fx=o.fh?-1:1,fy=o.fv?-1:1;const[x,y]=rot(sx*fx*o.w/2,sy*fy*o.h/2,(o.rot||0)*DEG);return[o.x+o.w/2+x,o.y+o.h/2+y];}
 function findAnchor(P,exclude){const tol=12/view.z;let best=null,bd=tol;
-  for(const o of doc.objects){if(!isBox(o)||o.id===exclude)continue;for(const a of['l','r','t','b','c']){const[x,y]=anchorPos(o,a);const d=Math.hypot(P.x-x,P.y-y);if(d<bd||(a!=='c'&&best&&best.a==='c'&&d<=bd+2/view.z)){bd=d;best={id:o.id,a,x,y};}}}
+  for(const o of doc.objects){if(!isBox(o)||o.id===exclude)continue;for(const a of((TYPES[o.type]&&TYPES[o.type].anchors)||['l','r','t','b','c'])){const[x,y]=anchorPos(o,a);const d=Math.hypot(P.x-x,P.y-y);if(d<bd||(a!=='c'&&best&&best.a==='c'&&d<=bd+2/view.z)){bd=d;best={id:o.id,a,x,y};}}}
   return best;}
 function resolveAnchors(){for(const l of doc.objects){if(l.type!=='line')continue;
   for(const k of['a1','a2']){if(!l[k])continue;const s=byId(l[k].id);if(!s||!isBox(s)){delete l[k];continue;}const[x,y]=anchorPos(s,l[k].a);if(k==='a1'){l.x1=x;l.y1=y;}else{l.x2=x;l.y2=y;}}}}
@@ -876,7 +917,7 @@ function resolveAnchors(){for(const l of doc.objects){if(l.type!=='line')continu
 /* ---------- rendering ---------- */
 function shapeSVG(o,exp){
   const d=DEF[o.key];if(!d)return'';const sx=o.w/d.w,sy=o.h/d.h,k=Math.sqrt(Math.abs(sx*sy))||1;
-  const p={s:o.stroke,f:o.fill,sw:o.sw/k};const cx=o.x+o.w/2,cy=o.y+o.h/2;
+  const p={s:o.stroke,f:o.fill,sw:o.sw/k,lv:o.lv??d.lv,liq:o.liq??d.liq,tag:o.tag??d.tag};const cx=o.x+o.w/2,cy=o.y+o.h/2;
   let body;try{body=d.draw(p);}catch(e){body='';}
   const tr=`translate(${R2(cx)} ${R2(cy)}) rotate(${R2(o.rot||0)}) scale(${R2((o.fh?-1:1)*sx*1000)/1000} ${R2((o.fv?-1:1)*sy*1000)/1000}) translate(${-d.w/2} ${-d.h/2})`;
   return `<g transform="${tr}">${exp?'':`<rect width="${d.w}" height="${d.h}" fill="transparent"/>`}${body}</g>`;}
@@ -913,17 +954,27 @@ function lineGeom(o){
     if(o.he)heads.push([x2,y2,Math.atan2(uy,ux)]);if(o.hs)heads.push([x1,y1,Math.atan2(-uy,-ux)]);
     if(o.mid)mid=[lab[0]+ux*hs/2,lab[1]+uy*hs/2,Math.atan2(uy,ux)];}
   return {d,heads,mid,lab,tan,hs};}
-function lineSVG(o,exp){if(o.kind==='measure')return measureSVG(o,exp);const g=lineGeom(o);const cap=o.dash==='dot'?'round':'round';
+function lineSVG(o,exp){if(o.kind==='measure')return measureSVG(o,exp);if(LINEKINDS[o.kind])return LINEKINDS[o.kind].svg(o,exp);const g=lineGeom(o);const cap=o.dash==='dot'?'round':'round';
   let s=`<path d="${g.d}" fill="none" stroke="${o.stroke}" stroke-width="${o.sw}" stroke-linecap="${cap}" stroke-linejoin="round"${dashArr(o)}/>`;
   g.heads.forEach(h=>s+=head(h[0],h[1],h[2],g.hs,o.stroke));if(g.mid)s+=head(g.mid[0]+Math.cos(g.mid[2])*g.hs*.2,g.mid[1]+Math.sin(g.mid[2])*g.hs*.2,g.mid[2],g.hs*1.35,o.stroke);
+  if(o.dotS)s+=`<circle cx="${R2(o.x1)}" cy="${R2(o.y1)}" r="${R2(Math.max(2.6,o.sw*1.9))}" fill="${o.stroke}"/>`;
   if(!exp)s=`<path d="${g.d}" fill="none" stroke="transparent" stroke-width="${Math.max(12,o.sw+10)}"/>`+s;
   if(o.label){let nx=-g.tan[1],ny=g.tan[0];if(ny>0.001||(Math.abs(ny)<=0.001&&nx>0)){nx=-nx;ny=-ny;}const k=(o.lo||1)*(12+(o.lsz||18)*.45);
     const m=o.ls==='math';s+=`<g transform="translate(${R2(g.lab[0]+nx*k)} ${R2(g.lab[1]+ny*k)})">${textLines(o.label,o.lsz||18,o.lc||o.stroke,{serif:m,italic:m})}</g>`;}
   return s;}
 function textSVG(o,exp){const b=textBox(o);return `<g transform="translate(${R2(o.x)} ${R2(o.y)}) rotate(${R2(o.rot||0)})">${exp?'':`<rect x="${R2(b.x-4)}" y="${R2(b.y-2)}" width="${R2(b.w+8)}" height="${R2(b.h+4)}" fill="transparent"/>`}<g class="tb">${textLines(o.text,o.size,o.color,{serif:o.font==='serif',bold:o.bold,italic:o.italic,align:o.align})}</g></g>`;}
 function objSVG(o,exp){const op=o.op!==undefined&&o.op<1?` opacity="${o.op}"`:'';let inner='';
-  if(o.type==='shape')inner=shapeSVG(o,exp)+boxLabel(o);else if(o.type==='image')inner=imageSVG(o)+boxLabel(o);else if(o.type==='line')inner=lineSVG(o,exp);else if(o.type==='text')inner=textSVG(o,exp);else if(o.type==='graph')inner=graphSVG(o)+boxLabel(o);else if(o.type==='angle')inner=angleSVG(o,exp);
+  if(o.type==='shape')inner=shapeSVG(o,exp)+boxLabel(o);else if(o.type==='image')inner=imageSVG(o)+boxLabel(o);else if(o.type==='line')inner=lineSVG(o,exp);else if(o.type==='text')inner=textSVG(o,exp);else if(o.type==='graph')inner=graphSVG(o)+boxLabel(o);else if(o.type==='angle')inner=angleSVG(o,exp);else if(TYPES[o.type]){try{inner=TYPES[o.type].svg(o,exp)+(TYPES[o.type].box&&!TYPES[o.type].noLabel?boxLabel(o):'');}catch(e){inner='';}}
   return exp?`<g${op}>${inner}</g>`:`<g data-id="${o.id}"${op}>${inner}</g>`;}
+
+/* ---------- display style: Educational Color / Scientific Monochrome ---------- */
+function lum(hex){let h=hex.slice(1);if(h.length===3)h=h.split('').map(c=>c+c).join('');const n=parseInt(h,16),r=(n>>16)/255,g=((n>>8)&255)/255,b=(n&255)/255;return .2126*r+.7152*g+.0722*b;}
+function monoize(svg){
+  svg=svg.replace(/<text\b[^>]*>/g,t=>t.replace(/fill="(#[0-9a-fA-F]{3,6})"/,(m,c)=>lum(c)>.92?m:'fill="#000000"'));
+  svg=svg.replace(/stroke="(#[0-9a-fA-F]{3,6})"/g,(m,c)=>lum(c)>.92?m:'stroke="#000000"');
+  svg=svg.replace(/fill="(#[0-9a-fA-F]{3,6})"/g,(m,c)=>{const L=lum(c);return 'fill="'+(L<.3?'#000000':L<.82?'#d4d4d4':'#ffffff')+'"';});
+  return svg;}
+const styled=html=>doc&&doc.style==='mono'?monoize(html):html;
 
 /* ---------- function graphs ---------- */
 function niceStep(r,n){const raw=r/Math.max(1,n);const p=Math.pow(10,Math.floor(Math.log10(raw)));const f=raw/p;return (f<1.5?1:f<3?2:f<7?5:10)*p;}
@@ -935,7 +986,9 @@ function compileExpr(src){const key=String(src);if(key in exprCache)return exprC
     s=s.replace(/^\s*[a-zA-Z]\w*\s*(\(\s*[xt]\s*\))?\s*=\s*/,'').replace(/π/g,'pi').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-').replace(/√/g,'sqrt');
     s=s.replace(/\d+(?:\.\d+)?[eE][+-]?\d+/g,m=>'('+Number(m)+')');
     if(!/^[0-9a-zA-Z_+\-*/^().,\s]*$/.test(s))throw 'มีอักขระที่ไม่รองรับ';
-    s=s.replace(/\^/g,'**').replace(/(\d|\))\s*(?=[a-zA-Z(])/g,'$1*');
+    s=s.replace(/(\d|\))\s*(?=[a-zA-Z(])/g,'$1*');
+    /* unary minus → (-1)* so that -(x-5)^2 and -x^2 mean −(…)² as in mathematics (JS forbids -a**b) */
+    s=s.replace(/(^|[(*/+\-^,])\s*-/g,'$1(-1)*').replace(/\^/g,'**');
     s=s.replace(/[a-zA-Z_]\w*/g,w=>{if(w==='x'||w==='t')return 'x';if(w==='pi')return 'Math.PI';if(w==='e')return 'Math.E';if(FNS[w])return 'Math.'+(FNS[w]===1?w:FNS[w]);throw 'ไม่รู้จัก “'+w+'”';});
     const f=new Function('x','"use strict";return ('+s+');');f(1);fn={f};}
   catch(err){fn={err:typeof err==='string'?err:'สูตรไม่ถูกต้อง'};}
@@ -947,8 +1000,8 @@ function graphInner(o){const W=o.w,H=o.h,L=46,R=14,T=14,B=30,pw=Math.max(10,W-L-
   const X=v=>L+(v-xmin)/(xmax-xmin)*pw,Y=v=>T+(ymax-v)/(ymax-ymin)*ph;const ax=o.stroke||'#111827';
   const xs=niceStep(xmax-xmin,Math.max(2,Math.round(pw/70))),ys=niceStep(ymax-ymin,Math.max(2,Math.round(ph/45)));
   let g='',lab='';const x0=xmin<=0&&xmax>=0?X(0):L,y0=ymin<=0&&ymax>=0?Y(0):T+ph;
-  for(let v=Math.ceil(xmin/xs-1e-9)*xs;v<=xmax+1e-9;v+=xs){const px=R2(X(v));g+=`M${px},${T}V${R2(T+ph)}`;lab+=tx(px,R2(T+ph+12),fmtNum(v),10.5,'#475569');}
-  for(let v=Math.ceil(ymin/ys-1e-9)*ys;v<=ymax+1e-9;v+=ys){const py=R2(Y(v));g+=`M${L},${py}H${R2(L+pw)}`;lab+=tx(L-6,py,fmtNum(v),10.5,'#475569',{a:'end'});}
+  for(let v=Math.ceil(xmin/xs-1e-9)*xs;v<=xmax+1e-9;v+=xs){const px=R2(X(v));g+=`M${px},${T}V${R2(T+ph)}`;if(o.ticks!==false)lab+=tx(px,R2(T+ph+12),fmtNum(v),10.5,'#475569');}
+  for(let v=Math.ceil(ymin/ys-1e-9)*ys;v<=ymax+1e-9;v+=ys){const py=R2(Y(v));g+=`M${L},${py}H${R2(L+pw)}`;if(o.ticks!==false)lab+=tx(L-6,py,fmtNum(v),10.5,'#475569',{a:'end'});}
   if(o.grid)s+=`<path d="${g}" stroke="#e5e7eb" stroke-width="1" fill="none"/>`;
   else s+=`<rect x="${L}" y="${T}" width="${R2(pw)}" height="${R2(ph)}" fill="none" stroke="#e5e7eb"/>`;
   s+=lab;const A={s:ax,sw:1.3};s+=arw(L,y0,L+pw+8,y0,A,8)+arw(x0,T+ph,x0,T-6,A,8);
@@ -996,11 +1049,11 @@ function snapPt(P,shift,origin){const an=findAnchor(P);if(an&&!shift)return {x:a
 
 function render(){
   resolveAnchors();
-  content.innerHTML=doc.objects.map(o=>objSVG(o,false)).join('');
+  content.innerHTML=styled(doc.objects.map(o=>objSVG(o,false)).join(''));
   // measure text
   let changed=false;
   content.querySelectorAll('g[data-id]').forEach(g=>{const o=byId(g.dataset.id);if(o&&o.type==='text'){const tb=g.querySelector('.tb');try{const b=tb.getBBox();if(b.width>0){const old=tcache[o.id];const nb={x:b.x,y:b.y,w:b.width,h:b.height};if(!old||Math.abs(old.w-nb.w)>.5||Math.abs(old.h-nb.h)>.5||Math.abs(old.x-nb.x)>.5){tcache[o.id]=nb;changed=true;}}}catch(e){}}});
-  if(changed)content.innerHTML=doc.objects.map(o=>objSVG(o,false)).join('');
+  if(changed)content.innerHTML=styled(doc.objects.map(o=>objSVG(o,false)).join(''));
   $('#board').setAttribute('width',doc.w);$('#board').setAttribute('height',doc.h);$('#board').setAttribute('fill',doc.bg==='transparent'?'url(#checker)':doc.bg);
   const gr=$('#gridRect');gr.setAttribute('width',doc.w);gr.setAttribute('height',doc.h);gr.style.display=ui.grid?'':'none';
   renderOverlay();
@@ -1039,7 +1092,7 @@ function cursorFor(sx,sy,r){const ang=((Math.atan2(sy,sx)/DEG+r)%180+180)%180;co
 let saveT=null;
 function commit(){const s=JSON.stringify(doc);if(hist[hi]===s)return;hist=hist.slice(0,hi+1);hist.push(s);if(hist.length>150)hist.shift();hi=hist.length-1;updUndo();queueSave();}
 function updUndo(){$('#undo').disabled=hi<=0;$('#redo').disabled=hi>=hist.length-1;}
-function restore(s){doc=JSON.parse(s);sel=sel.filter(id=>byId(id));$('#docname').value=doc.name||'';render();renderPanel();queueSave();}
+function restore(s){doc=JSON.parse(s);sel=sel.filter(id=>byId(id));$('#docname').value=doc.name||'';syncStyleSw();render();renderPanel();queueSave();}
 function undo(){if(hi>0){hi--;restore(hist[hi]);updUndo();}}
 function redo(){if(hi<hist.length-1){hi++;restore(hist[hi]);updUndo();}}
 function queueSave(){clearTimeout(saveT);$('#saveState').textContent='กำลังบันทึก…';saveT=setTimeout(()=>{try{localStorage.setItem('physidraw.v1',JSON.stringify({doc,ui}));$('#saveState').textContent='บันทึกอัตโนมัติแล้ว';}catch(e){$('#saveState').textContent='บันทึกในเบราว์เซอร์ไม่ได้ — ใช้ “ส่งออก → .json” เพื่อเก็บงาน';}},400);}
@@ -1063,11 +1116,12 @@ function setTool(t){tool=t;stage.classList.remove('t-hand','t-draw','t-text');if
   $('#stHint').textContent=hints[t]||(LP[t]?`${LP[t].n}: ลากเพื่อวาด · ปลายเส้นจะเกาะจุดต่อของอุปกรณ์ (จุดสีม่วง) · Shift = ล็อกมุม 45° · Esc = เลิก`:'');renderOverlay();}
 
 function addObj(o,doSelect=true){doc.objects.push(o);if(doSelect)sel=[o.id];render();renderPanel();commit();}
-function addShapeAt(key,x,y){if(key==='graph_fn'){insertGraph({x,y});return;}const d=DEF[key];const o=mkShape(key,x,y);o.x=snapV(o.x);o.y=snapV(o.y);addObj(o);tip(`เพิ่ม “${d.name}” แล้ว`);}
+function addShapeAt(key,x,y){pushRecent(key);if(key==='graph_fn'){insertGraph({x,y});return;}const d=DEF[key];
+  if(d&&d.make){const objs=d.make(snapV(x),snapV(y));doc.objects.push(...objs);sel=objs.filter(o=>o.type!=='line'||objs.length===1).map(o=>o.id);if(!sel.length)sel=objs.map(o=>o.id);setTool('select');render();renderPanel();commit();tip(`เพิ่ม “${d.name}” แล้ว — แก้ไขแต่ละส่วนได้`);return;}const o=mkShape(key,x,y);o.x=snapV(o.x);o.y=snapV(o.y);addObj(o);tip(`เพิ่ม “${d.name}” แล้ว`);}
 
 function delSel(){if(!sel.length)return;const S=new Set(sel);doc.objects=doc.objects.filter(o=>!S.has(o.id));sel=[];render();renderPanel();commit();}
 function cloneObj(o,dx,dy){const c=JSON.parse(JSON.stringify(o));c.id=uid();delete c.a1;delete c.a2;moveObj(c,dx,dy);return c;}
-function moveObj(o,dx,dy){if(isBox(o)||o.type==='text'){o.x+=dx;o.y+=dy;}else if(o.type==='angle'){o.vx+=dx;o.vy+=dy;o.x1+=dx;o.y1+=dy;o.x2+=dx;o.y2+=dy;}else{o.x1+=dx;o.y1+=dy;o.x2+=dx;o.y2+=dy;if(o.cx!==undefined){o.cx+=dx;o.cy+=dy;}}}
+function moveObj(o,dx,dy){if(TYPES[o.type]&&TYPES[o.type].move){TYPES[o.type].move(o,dx,dy);return;}if(isBox(o)||o.type==='text'){o.x+=dx;o.y+=dy;}else if(o.type==='angle'){o.vx+=dx;o.vy+=dy;o.x1+=dx;o.y1+=dy;o.x2+=dx;o.y2+=dy;}else{o.x1+=dx;o.y1+=dy;o.x2+=dx;o.y2+=dy;if(o.cx!==undefined){o.cx+=dx;o.cy+=dy;}}}
 function dupSel(){const objs=selObjs();if(!objs.length)return;const map={};const cs=objs.map(o=>{const c=cloneObj(o,20,20);map[o.id]=c.id;return c;});
   // keep connections among duplicated set
   objs.forEach((o,i)=>{if(o.type==='line'){for(const k of['a1','a2'])if(o[k]&&map[o[k].id])cs[i][k]={id:map[o[k].id],a:o[k].a};}});
@@ -1129,7 +1183,7 @@ stage.addEventListener('pointermove',e=>{
     if(ui.snap&&!(or.rot%90)){if(drag.sx)w=Math.max(SNAP,Math.round(w/SNAP)*SNAP);if(drag.sy)h=Math.max(SNAP,Math.round(h/SNAP)*SNAP);}
     const lock=e.shiftKey!==(o.type==='image');if(lock&&drag.sx&&drag.sy){const k=Math.max(w/or.w,h/or.h);w=or.w*k;h=or.h*k;}
     const[ox,oy]=rot(drag.sx*w/2,drag.sy*h/2,a);const ncx=Fx+ox,ncy=Fy+oy;
-    o.w=w;o.h=h;o.x=ncx-w/2;o.y=ncy-h/2;
+    o.w=w;o.h=h;o.x=ncx-w/2;o.y=ncy-h/2;if(TYPES[o.type]&&TYPES[o.type].afterResize)TYPES[o.type].afterResize(o,or);
     render();$('#stHint').textContent=`ขนาด ${Math.round(w)} × ${Math.round(h)}  ·  Shift = รักษาสัดส่วน`;return;}
   case'rot':{if(!o)return;let c;if(isBox(o))c=[o.x+o.w/2,o.y+o.h/2];else{const b=textBox(o),r0=(drag.orig.rot||0)*DEG;const[u,v]=rot(b.x+b.w/2,b.y+b.h/2,r0);c=[o.x+u,o.y+v];if(!drag.c)drag.c=c;c=drag.c;}
     let ang=Math.atan2(P.y-c[1],P.x-c[0])/DEG+90;ang=((ang%360)+360)%360;if(e.shiftKey)ang=Math.round(ang/15)*15;else{const s=Math.round(ang/90)*90;if(Math.abs(ang-s)<4)ang=s;}if(ang>180)ang-=360;
@@ -1234,6 +1288,7 @@ function renderPanel(){const P=$('#props');const objs=selObjs();
    <div class="sec"><h5>สีทั้งหมดที่เลือก</h5>${colorRow('เส้น','stroke',objs[0].stroke||objs[0].color,PAL)}${colorRow('พื้น','fill',objs[0].fill,FPAL)}
    <div class="row"><span class="lab">ความหนา</span><input type="range" min="0.5" max="8" step="0.5" data-p="sw" value="${objs[0].sw||2}"></div></div>`;return;}
   const o=objs[0];let h='';
+  if(TYPES[o.type]&&TYPES[o.type].panel){P.innerHTML=TYPES[o.type].panel(o);return;}
   if(o.type==='shape'||o.type==='image'){const d=DEF[o.key];
     h+=`<div class="ph"><div class="ttl">${o.type==='image'?'รูปภาพ':esc(d.name)}<div class="sub">${o.type==='image'?'Image':esc(d.en)}</div></div>${ACTS}</div>
     <div class="sec"><h5>ตำแหน่งและขนาด</h5><div class="row">${num('X','x',o.x)}${num('Y','y',o.y)}</div><div class="row">${num('W','w',o.w)}${num('H','h',o.h)}</div>
@@ -1242,9 +1297,11 @@ function renderPanel(){const P=$('#props');const objs=selObjs();
     <div class="row"><span class="lab">ความหนาเส้น</span><input type="range" min="0.5" max="8" step="0.25" data-p="sw" value="${o.sw}"><span class="val">${o.sw}</span></div>
     <div class="row"><span class="lab">ความทึบ</span><input type="range" min="0.1" max="1" step="0.05" data-p="op" value="${o.op??1}"><span class="val">${Math.round((o.op??1)*100)}%</span></div></div>`;
     else h+=`<div class="sec"><h5>รูปภาพ</h5><div class="row"><span class="lab">ความทึบ</span><input type="range" min="0.1" max="1" step="0.05" data-p="op" value="${o.op??1}"><span class="val">${Math.round((o.op??1)*100)}%</span></div><div class="hint">ลากมุมเพื่อย่อ/ขยาย (รักษาสัดส่วนอัตโนมัติ · Shift = ยืดอิสระ)</div></div>`;
+    if(o.type==='shape')h+=liquidSec(o);
     h+=labelSec(o,true);
   }else if(o.type==='line'){
     h+=`<div class="ph"><div class="ttl">${LINE_NAME[o.kind]||'เส้น'}${o.kind==='measure'?' · '+fmtLen(Math.hypot(o.x2-o.x1,o.y2-o.y1)):''}<div class="sub">${o.kind==='measure'?'ตั้งมาตราส่วนได้ที่แผงแผ่นงาน (คลิกพื้นที่ว่าง)':'Connector'}</div></div>${ACTS}</div>
+    ${LINEKINDS[o.kind]&&LINEKINDS[o.kind].panel?LINEKINDS[o.kind].panel(o):''}
     <div class="sec"><h5>ชนิดเส้น</h5><div class="row">${segB('kind',o.kind,[['straight','ตรง'],['elbow','มุมฉาก'],['curve','โค้ง'],['spring','สปริง'],['wave','คลื่น'],['measure','วัด']])}</div>
     ${o.kind==='elbow'?`<div class="row">${segB('elbow',o.elbow,[['hv','แนวนอน→ตั้ง'],['vh','แนวตั้ง→นอน']])}</div>`:''}
     <div class="row">${segB('dash',o.dash,[['solid','เส้นทึบ'],['dash','เส้นประ'],['dot','จุดไข่ปลา']])}</div>
@@ -1264,7 +1321,7 @@ function renderPanel(){const P=$('#props');const objs=selObjs();
     <div class="sec"><h5>ช่วงแกน</h5><div class="row">${num('x ต่ำ','xmin',o.xmin,.5)}${num('x สูง','xmax',o.xmax,.5)}</div><div class="row">${num('y ต่ำ','ymin',o.ymin,.5)}${num('y สูง','ymax',o.ymax,.5)}</div>
     <div class="row"><button class="btn" data-act="fity" style="flex:1;height:28px;justify-content:center">ปรับแกน y ให้พอดีกราฟ</button></div>
     <div class="row"><label class="f"><span>ชื่อแกน x</span><input data-p="xl" value="${esc(o.xl||'')}"></label><label class="f"><span>ชื่อแกน y</span><input data-p="yl" value="${esc(o.yl||'')}"></label></div>
-    <div class="row" style="gap:14px"><label class="chk"><input type="checkbox" data-p="grid" ${o.grid?'checked':''}>เส้นตาราง</label><label class="chk"><input type="checkbox" data-p="legend" ${o.legend?'checked':''}>คำอธิบายเส้น</label></div></div>
+    <div class="row" style="gap:14px"><label class="chk"><input type="checkbox" data-p="grid" ${o.grid?'checked':''}>เส้นตาราง</label><label class="chk"><input type="checkbox" data-p="legend" ${o.legend?'checked':''}>คำอธิบายเส้น</label><label class="chk"><input type="checkbox" data-p="ticks" ${o.ticks!==false?'checked':''}>ตัวเลขแกน</label></div></div>
     <div class="sec"><h5>ขนาดและรูปแบบ</h5><div class="row">${num('X','x',o.x)}${num('Y','y',o.y)}</div><div class="row">${num('W','w',o.w)}${num('H','h',o.h)}</div>
     <div class="row"><span class="lab">ความหนาเส้น</span><input type="range" min="0.5" max="6" step="0.25" data-p="sw" value="${o.sw||2}"><span class="val">${o.sw||2}</span></div>
     ${colorRow('สีแกน','stroke',o.stroke,PAL.slice(0,4))}${colorRow('พื้นหลัง','fill',o.fill,['none','#ffffff','#f8fafc','#fffbeb'])}</div>`;
@@ -1291,6 +1348,11 @@ function renderPanel(){const P=$('#props');const objs=selObjs();
     <div class="row">${num('X','x',o.x)}${num('Y','y',o.y)}${num('↻','rot',o.rot||0)}</div></div>`;
   }
   P.innerHTML=h;}
+const LIQ=['#7dd3fc','#93c5fd','#f9a8d4','#fda4af','#fde68a','#bef264','#86efac','#c4b5fd','#fdba74','#e5e7eb','#a16207','#1e3a8a'];
+function liquidSec(o){const d=DEF[o.key];if(!d||(!d.liquid&&!d.tagged))return '';let h='<div class="sec"><h5>ภาชนะ</h5>';
+  if(d.liquid){const lv=o.lv??d.lv;h+=`<div class="row"><span class="lab">ระดับของเหลว</span><input type="range" min="0" max="1" step="0.01" data-p="lv" value="${lv}"><span class="val">${Math.round(lv*100)}%</span></div>${colorRow('สีของสาร','liq',o.liq??d.liq,LIQ)}`;}
+  if(d.tagged)h+=`<div class="row"><label class="f"><span>ข้อความบนภาชนะ</span><input data-p="tag" value="${esc(o.tag??d.tag??'')}"></label></div>`;
+  return h+'</div>';}
 function labelSec(o,box){const m=o.ls==='math';return `<div class="sec"><h5>ป้ายกำกับ</h5><input class="ti" data-p="label" id="fLabel" value="${esc(o.label||'')}" placeholder="${box?'เช่น R, 2 kg, เลนส์':'เช่น F, v_0, mg'}">${symBar()}
   <div class="row" style="margin-top:8px">${box?segB('lp',o.lp,[['top','บน'],['bottom','ล่าง'],['left','ซ้าย'],['right','ขวา'],['center','กลาง']]):`<button class="btn" data-act="flipLabel" style="flex:1;height:28px">สลับด้านป้าย</button>`}</div>
   <div class="row">${segB('ls',o.ls,[['math','𝑥 สัญลักษณ์'],['text','ข้อความปกติ']])}</div>
@@ -1325,7 +1387,8 @@ function focusPanel(which,selectAll){setTimeout(()=>{const el=$(which==='text'?'
 const props=$('#props');let lastField=null;
 props.addEventListener('focusin',e=>{if(e.target.matches('input.ti,textarea.ta'))lastField=e.target;});
 function setProp(o,p,v){
-  if(p==='fill'&&o.type!=='shape'&&o.type!=='graph')return;
+  if(p==='fill'&&o.type!=='shape'&&o.type!=='graph'&&!TYPES[o.type])return;
+  if(TYPES[o.type]&&TYPES[o.type].onProp){o[p]=v;TYPES[o.type].onProp(o,p,v);return;}
   if(o.type==='angle'&&!['stroke','sw','r','label','lsz','lc','arms','op'].includes(p))return;
   if(p==='stroke'&&o.type==='text'){o.color=v;return;}
   if(['x','y'].includes(p)&&o.type==='line')return;
@@ -1338,14 +1401,14 @@ props.addEventListener('input',e=>{const t=e.target;
   if(t.dataset.fn){const[i,k]=t.dataset.fn.split('|');selObjs().forEach(o=>{if(o.type==='graph'&&o.fns[+i])o.fns[+i][k]=t.value;});render();return;}
   const p=t.dataset.p;if(!p)return;let v=t.type==='checkbox'?t.checked:(t.type==='number'||t.type==='range')?parseFloat(t.value):t.value;if(typeof v==='number'&&isNaN(v))return;
   selObjs().forEach(o=>setProp(o,p,v));
-  const val=t.parentElement.querySelector('.val');if(val)val.textContent=p==='op'?Math.round(v*100)+'%':v;
+  const val=t.parentElement.querySelector('.val');if(val)val.textContent=(p==='op'||p==='lv')?Math.round(v*100)+'%':v;
   render();});
 props.addEventListener('change',e=>{const t=e.target;
   if(t.dataset.ui){ui[t.dataset.ui]=t.checked;render();queueSave();return;}
   if(t.dataset.doc==='preset'){const m={A4L:[1123,794],A4P:[794,1123],'169':[1280,720],wide:[1200,700],sq:[1000,1000]}[t.value];if(m){doc.w=m[0];doc.h=m[1];render();fit();commit();renderPanel();}return;}
   if(t.dataset.doc){commit();renderPanel();return;}
   if(t.dataset.fn){commit();renderPanel();return;}
-  if(t.dataset.p){commit();if(t.type==='checkbox'||t.type==='number'||selObjs().some(o=>o.type==='graph'||o.type==='angle'))renderPanel();}});
+  if(t.dataset.p){commit();if(t.type==='checkbox'||t.type==='number'||selObjs().some(o=>o.type==='graph'||o.type==='angle'||TYPES[o.type]||(o.type==='line'&&LINEKINDS[o.kind])))renderPanel();}});
 props.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   if(b.dataset.sym){const f=lastField&&document.body.contains(lastField)?lastField:(props.querySelector('#fText')||props.querySelector('#fLabel'));if(!f)return;const s=f.selectionStart??f.value.length,en=f.selectionEnd??s;f.value=f.value.slice(0,s)+b.dataset.sym+f.value.slice(en);f.focus();f.selectionStart=f.selectionEnd=s+b.dataset.sym.length;f.dispatchEvent(new Event('input',{bubbles:true}));commit();return;}
   if(b.dataset.sw){const[p,c]=b.dataset.sw.split('|');selObjs().forEach(o=>setProp(o,p,c));render();renderPanel();commit();return;}
@@ -1355,6 +1418,7 @@ props.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)retu
     if(p==='_tb'){selObjs().forEach(o=>{o[v]=!o[v];});}else selObjs().forEach(o=>setProp(o,p,v));
     render();renderPanel();commit();return;}
   const a=b.dataset.act;if(!a)return;const o=selObjs()[0];
+  if(a.startsWith('x:')){const objs2=selObjs();objs2.forEach(ob=>{const T=TYPES[ob.type]||(ob.type==='line'&&LINEKINDS[ob.kind]);if(T&&T.act)T.act(ob,a.slice(2),b);});render();renderPanel();commit();return;}
   if(a.startsWith('rmfn:')){o.fns.splice(+a.slice(5),1);render();renderPanel();commit();return;}
   if(a==='addfn'){const cols=['#2563eb','#dc2626','#16a34a','#7c3aed','#ea580c','#0891b2'];o.fns.push({e:'',c:cols[o.fns.length%cols.length]});renderPanel();setTimeout(()=>{const f=props.querySelectorAll('[data-fn$="|e"]');f[f.length-1]&&f[f.length-1].focus();},20);return;}
   if(a==='fity'){fitY(o);render();renderPanel();commit();return;}
@@ -1367,18 +1431,25 @@ props.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)retu
    case'flipLabel':o.lo=-(o.lo||1);render();commit();break;}});
 
 /* ---------- library UI ---------- */
-function thumb(d){const pad=6,s=Math.max(d.w,d.h)+pad*2;const sc=62/s;const p={s:d.stroke,f:d.fill,sw:1.4*(d.sw/2)/sc};let b='';try{b=d.draw(p);}catch(e){}
+function thumb(d){const pad=6,s=Math.max(d.w,d.h)+pad*2;const sc=62/s;const p={s:d.stroke,f:d.fill,sw:1.4*(d.sw/2)/sc,lv:d.lv,liq:d.liq,tag:d.tag};let b='';try{b=d.draw(p);}catch(e){}
   return `<svg viewBox="${-pad-(s-d.w-pad*2)/2} ${-pad-(s-d.h-pad*2)/2} ${s} ${s}" preserveAspectRatio="xMidYMid meet">${b}</svg>`;}
-function buildChips(){$('#chips').innerHTML=[['all','ทั้งหมด'],...CATS.map(c=>[c[0],c[1]])].map(([k,n])=>`<button class="chip ${libFilter===k?'on':''}" data-c="${k}">${n}</button>`).join('');}
+function buildSubj(){$('#subj').innerHTML=SUBJ.map(([k,n,en,c,ic])=>`<button class="sj${libSubj===k?' on':''}" data-s="${k}" style="--c:${c}" title="${en}">${IC(ic,15)}<span>${n}</span></button>`).join('');}
+const subjCats=()=>[...CATS.filter(c=>catSubj(c[0])===libSubj),...CATS.filter(c=>catSubj(c[0])==='shared')];
+function buildChips(){const cats=subjCats();$('#chips').innerHTML=[['all','ทั้งหมด'],...cats.map(c=>[c[0],c[1]])].map(([k,n])=>`<button class="chip ${libFilter===k?'on':''}" data-c="${k}">${n}</button>`).join('');}
+const card=d=>`<div class="item${libSel===d.key?' on':''}" draggable="true" data-k="${d.key}" title="${esc(d.name)} · ${esc(d.en)}">${thumb(d)}<span>${esc(d.name)}</span><button class="fav${libStore.fav.includes(d.key)?' on':''}" data-fav="${d.key}" aria-label="รายการโปรด">${libStore.fav.includes(d.key)?'★':'☆'}</button></div>`;
 function buildLib(){const q=$('#q').value.trim().toLowerCase();let h='';
-  for(const[c,n,en]of CATS){if(libFilter!=='all'&&libFilter!==c)continue;const items=LIB.filter(d=>d.cat===c&&(!q||(d.name+' '+d.en+' '+d.key+' '+d.al).toLowerCase().includes(q)));if(!items.length)continue;
+  if(!q&&libFilter==='all'){const sec=(t,keys)=>{const ds=keys.map(k=>DEF[k]).filter(Boolean);return ds.length?`<div class="cat"><h4>${t} <span>${ds.length}</span></h4><div class="grid3">${ds.map(card).join('')}</div></div>`:'';};
+    h+=sec('★ รายการโปรด',libStore.fav)+sec('ใช้ล่าสุด',libStore.recent);
+    if(libSubj==='bio'||libSubj==='astro')h+=`<div class="soon"><b>${libSubj==='bio'?'ชีววิทยา':'ดาราศาสตร์'} — กำลังพัฒนา</b><span>หมวดนี้จะเพิ่มในเฟส ${libSubj==='bio'?3:4} ระหว่างนี้ใช้หมวดทั่วไปด้านล่าง หรือค้นหาวัตถุจากทุกสาขาได้</span></div>`;}
+  for(const[c,n,en]of (q?CATS:subjCats())){if(libFilter!=='all'&&libFilter!==c)continue;const items=LIB.filter(d=>d.cat===c&&(!q||(d.name+' '+d.en+' '+d.key+' '+d.al).toLowerCase().includes(q)));if(!items.length)continue;
     const wb=c==='elec'?`<div class="wirebar"><button data-tool="wire_s" title="ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว (W)">${IC(ICON.wire_s,16)}สายไฟตรง</button><button data-tool="wire" title="สายไฟหักมุมฉาก (E)">${IC(ICON.wire,16)}สายหักมุม</button></div>`:'';
-    h+=`<div class="cat"><h4>${n} <span>${items.length}</span></h4>${wb}<div class="grid3">${items.map(d=>`<div class="item${libSel===d.key?' on':''}" draggable="true" data-k="${d.key}" aria-label="${esc(d.name)}">${thumb(d)}<span>${esc(d.name)}</span></div>`).join('')}</div></div>`;}
+    h+=`<div class="cat"><h4>${n} <span>${items.length}</span></h4>${wb}<div class="grid3">${items.map(card).join('')}</div></div>`;}
   $('#libbody').innerHTML=h||`<div class="empty-note">ไม่พบอุปกรณ์ “${esc(q)}”</div>`;}
+$('#subj').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(!b)return;libSubj=b.dataset.s;libFilter='all';libStore.subj=libSubj;saveLibStore();buildSubj();buildChips();buildLib();$('#libbody').scrollTop=0;});
 $('#chips').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;libFilter=b.dataset.c;buildChips();buildLib();});
 $('#q').addEventListener('input',buildLib);
 let cascade=0;
-$('#libbody').addEventListener('click',e=>{const tb=e.target.closest('[data-tool]');if(tb){setTool(tb.dataset.tool);tip(LP[tb.dataset.tool].n+': ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว');return;}const it=e.target.closest('.item');if(!it)return;markLib(it);const c=viewCenter();cascade=(cascade+1)%6;addShapeAt(it.dataset.k,c.x+cascade*20-50,c.y+cascade*20-50);});
+$('#libbody').addEventListener('click',e=>{const fv=e.target.closest('[data-fav]');if(fv){e.stopPropagation();const k=fv.dataset.fav;libStore.fav=libStore.fav.includes(k)?libStore.fav.filter(x=>x!==k):[...libStore.fav,k];saveLibStore();buildLib();return;}const tb=e.target.closest('[data-tool]');if(tb){setTool(tb.dataset.tool);tip(LP[tb.dataset.tool].n+': ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว');return;}const it=e.target.closest('.item');if(!it)return;markLib(it);const c=viewCenter();cascade=(cascade+1)%6;addShapeAt(it.dataset.k,c.x+cascade*20-50,c.y+cascade*20-50);});
 function markLib(it){libSel=it.dataset.k;document.querySelectorAll('#libbody .item.on').forEach(x=>x.classList.remove('on'));it.classList.add('on');}
 $('#libbody').addEventListener('dragstart',e=>{const it=e.target.closest('.item');if(!it)return;markLib(it);e.dataTransfer.setData('text/x-physidraw',it.dataset.k);e.dataTransfer.setData('text/plain',DEF[it.dataset.k].name);e.dataTransfer.effectAllowed='copy';});
 
@@ -1386,7 +1457,7 @@ $('#libbody').addEventListener('dragstart',e=>{const it=e.target.closest('.item'
 function buildRail(){const t=(k,lab,title)=>`<button class="ib tl" data-tool="${k}" title="${title}">${IC(ICON[k],18)}<span>${lab}</span></button>`;
   $('#rail').innerHTML=t('select','เลือก','เลือก / ย้าย (V)')+t('hand','เลื่อน','มือเลื่อนมุมมอง (H / Space)')+t('text','ข้อความ','ข้อความ (T)')
    +'<div class="rg">สายไฟ</div>'+t('wire_s','สายตรง','สายไฟเส้นตรง (W) — ลากจากขั้วหนึ่งไปอีกขั้ว')+t('wire','สายหักมุม','สายไฟหักมุมฉาก (E)')
-   +'<div class="rg">เส้น</div>'+t('arrow','ลูกศร','ลูกศร / เวกเตอร์แรง (A)')+t('line','เส้นตรง','เส้นตรง (L)')+t('dashed','เส้นประ','เส้นประ / แกน')+t('double','ระยะ','ลูกศรสองหัว (บอกระยะ)')+t('ray','แสง','รังสีแสง (ลูกศรกลางเส้น)')+t('curve','โค้ง','ลูกศรโค้ง')+t('spring','สปริง','สปริงเชื่อมสองจุด')+t('wave','คลื่น','คลื่น / โฟตอน')
+   +'<div class="rg">เส้น</div>'+t('arrow','ลูกศร','ลูกศร / เวกเตอร์แรง (A)')+t('line','เส้นตรง','เส้นตรง (L)')+t('dashed','เส้นประ','เส้นประ / แกน')+t('double','ระยะ','ลูกศรสองหัว (บอกระยะ)')+t('ray','แสง','รังสีแสง (ลูกศรกลางเส้น)')+t('curve','โค้ง','ลูกศรโค้ง')+t('leader','ชี้ป้าย','เส้นชี้ป้ายกำกับ (leader line) — มีจุดที่ปลายเริ่ม')+t('spring','สปริง','สปริงเชื่อมสองจุด')+t('wave','คลื่น','คลื่น / โฟตอน')
    +'<div class="rg">วัด/กราฟ</div>'+t('measure','วัดระยะ','ไม้วัดระยะ (M) — ลากจากจุดหนึ่งไปอีกจุด')+t('angle','วัดมุม','วัดมุม (Q) — คลิกที่จุดยอดมุมแล้วลาก')+`<button class="ib tl" data-insert="graph" title="แทรกกราฟจากสูตร">${IC(ICON.graph,18)}<span>กราฟ</span></button>`;}
 $('#rail').addEventListener('click',e=>{const ins=e.target.closest('[data-insert]');if(ins){insertGraph(viewCenter());return;}const b=e.target.closest('[data-tool]');if(b)setTool(b.dataset.tool);});
 function insertGraph(c){const g=mkGraph(snapV(c.x),snapV(c.y));setTool('select');addObj(g);tip('แทรกกราฟแล้ว — แก้สูตรได้ที่แผงด้านขวา');}
@@ -1402,6 +1473,8 @@ $('#fileImg').onchange=e=>{const f=e.target.files[0];if(f)insertImageFile(f);e.t
 $('#btnNew').onclick=()=>{doc=newDoc();tcache={};sel=[];$('#docname').value=doc.name;render();renderPanel();fit();commit();toast('สร้างแผ่นงานใหม่ (Ctrl+Z เพื่อย้อนกลับ)');};
 $('#docname').addEventListener('input',e=>{doc.name=e.target.value;});
 $('#docname').addEventListener('change',()=>commit());
+$('#styleSw').onclick=e=>{const b=e.target.closest('[data-st]');if(!b)return;doc.style=b.dataset.st==='mono'?'mono':undefined;syncStyleSw();render();commit();tip(b.dataset.st==='mono'?'แบบขาวดำเชิงวิชาการ — เหมาะกับข้อสอบและบทความ':'แบบสีสำหรับสื่อการสอน');};
+function syncStyleSw(){document.querySelectorAll('#styleSw button').forEach(b=>b.classList.toggle('on',(b.dataset.st==='mono')===(doc.style==='mono')));}
 $('#undo').onclick=undo;$('#redo').onclick=redo;
 $('#zIn').onclick=()=>zoomAt(1.2);$('#zOut').onclick=()=>zoomAt(1/1.2);$('#zFit').onclick=fit;$('#zTxt').onclick=fit;
 
@@ -1414,7 +1487,7 @@ function buildSVG(area,bg){
   if(area==='content'&&doc.objects.length){try{const bb=content.getBBox();if(bb.width>0){const pad=16;b={x:bb.x-pad,y:bb.y-pad,w:bb.width+pad*2,h:bb.height+pad*2};}}catch(e){}}
   b={x:Math.floor(b.x),y:Math.floor(b.y),w:Math.ceil(b.w),h:Math.ceil(b.h)};
   const bgc=doc.bg==='transparent'?'#ffffff':doc.bg;
-  const inner=doc.objects.map(o=>objSVG(o,true)).join('');
+  const inner=styled(doc.objects.map(o=>objSVG(o,true)).join(''));
   return {svg:`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${b.x} ${b.y} ${b.w} ${b.h}" width="${b.w}" height="${b.h}">${bg?`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="${bgc}"/>`:''}${inner}</svg>`,w:b.w,h:b.h};}
 function svgToPng(svg,w,h,scale){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=Math.round(w*scale);c.height=Math.round(h*scale);const g=c.getContext('2d');g.drawImage(img,0,0,c.width,c.height);c.toBlob(b=>b?res({blob:b,url:c.toDataURL('image/png'),W:c.width,H:c.height}):rej(),'image/png');};img.onerror=rej;img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);});}
 let DL=null;(async()=>{try{if(window.claude&&typeof window.claude.use==='function')DL=await window.claude.use('downloads');}catch(e){DL=null;}})();
@@ -1502,22 +1575,33 @@ function T_perov(){const d=newDoc();d.name='เพอรอฟสไกต์แ
   O.push(mkText('E_c',892,300,{size:16,font:'serif',italic:true,color:'#2563eb',align:'left'}));
   O.push(mkText('โครงสร้างเพอรอฟสไกต์และสมบัติเฟร์โรอิเล็กทริก',500,64,{size:26,bold:true}));return d;}
 function T_blank(){return newDoc();}
-const TPL=[['การเกิดภาพจากเลนส์นูน','ทัศนศาสตร์ · รังสีหลัก 3 เส้น',T_lens],['วงจร RC อนุกรม','วงจรไฟฟ้า · สายไฟเชื่อมขั้วอัตโนมัติ',T_rc],['แรงบนพื้นเอียง','กลศาสตร์ · แผนภาพวัตถุอิสระ',T_incline],['เพอรอฟสไกต์ & P–E loop','วัสดุเฟร์โรอิเล็กทริก',T_perov],['แผ่นงานว่าง','เริ่มต้นใหม่',T_blank]];
+const TPL=[['การเกิดภาพจากเลนส์นูน','ทัศนศาสตร์ · รังสีหลัก 3 เส้น',T_lens],['วงจร RC อนุกรม','วงจรไฟฟ้า · สายไฟเชื่อมขั้วอัตโนมัติ',T_rc],['แรงบนพื้นเอียง','กลศาสตร์ · แผนภาพวัตถุอิสระ',T_incline],['เพอรอฟสไกต์ & P–E loop','วัสดุเฟร์โรอิเล็กทริก',T_perov],['แผ่นงานว่าง','เริ่มต้นใหม่',T_blank,'shared']];
 function docThumb(d){const save=doc;doc=d;resolveAnchors();const inner=d.objects.map(o=>objSVG(o,true)).join('');doc=save;return `<svg viewBox="0 0 ${d.w} ${d.h}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;}
-function openTpl(){$('#tgrid').innerHTML=TPL.map((t,i)=>`<button class="tcard" data-t="${i}"><div class="th">${docThumb(t[2]())}</div><div class="tt"><b>${t[0]}</b><span>${t[1]}</span></div></button>`).join('');$('#mTpl').classList.add('show');}
-$('#btnTpl').onclick=openTpl;
-$('#tgrid').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;doc=TPL[+b.dataset.t][2]();tcache={};sel=[];$('#docname').value=doc.name;closeModals();render();renderPanel();fit();commit();});
+let tplSubj=null;
+function openTpl(subj){tplSubj=subj||tplSubj||libSubj;const tabs=`<div class="tabs">${SUBJ.map(([k,n])=>`<button data-ts="${k}" class="${tplSubj===k?'on':''}">${n} (${TPL.filter(t=>(t[3]||'phys')===k).length})</button>`).join('')}</div>`;
+  const list=TPL.map((t,i)=>[t,i]).filter(([t])=>(t[3]||'phys')===tplSubj||t[3]==='shared');
+  $('#tgrid').innerHTML=list.map(([t,i])=>{let th='';try{th=docThumb(t[2]());}catch(e){}return `<button class="tcard" data-t="${i}"><div class="th">${th}</div><div class="tt"><b>${t[0]}</b><span>${t[1]}</span></div></button>`;}).join('')+(list.length<=1?`<div class="soon"><b>กำลังพัฒนา</b><span>แม่แบบสาขานี้จะเพิ่มในเฟสถัดไป</span></div>`:'');
+  $('#tplTabs').innerHTML=tabs;$('#mTpl').classList.add('show');}
+$('#btnTpl').onclick=()=>openTpl(libSubj);
+$('#tplTabs').addEventListener('click',e=>{const b=e.target.closest('[data-ts]');if(b)openTpl(b.dataset.ts);});
+$('#tgrid').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;doc=TPL[+b.dataset.t][2]();tcache={};sel=[];$('#docname').value=doc.name;syncStyleSw();closeModals();render();renderPanel();fit();commit();});
 
 /* ---------- init ---------- */
 function init(){
-  buildChips();buildLib();buildRail();
+  if(libStore.subj&&SUBJ.some(s=>s[0]===libStore.subj))libSubj=libStore.subj;
+  buildSubj();buildChips();buildLib();buildRail();
   let saved=null;try{saved=JSON.parse(localStorage.getItem('physidraw.v1')||'null');}catch(e){}
   if(saved&&saved.doc&&Array.isArray(saved.doc.objects)){doc=Object.assign(newDoc(),saved.doc);if(saved.ui)ui=Object.assign(ui,saved.ui);}else doc=T_lens();
-  $('#docname').value=doc.name||'';
+  $('#docname').value=doc.name||'';syncStyleSw();
   setTool('select');render();renderPanel();requestAnimationFrame(()=>{fit();render();});commit();
   addEventListener('resize',()=>renderOverlay());
 }
-init();
+document.addEventListener('DOMContentLoaded',init);
 </script>
+<!-- Subject modules (loaded after the core; the editor still works if a module fails to load) -->
+<script src="js/elements.js"></script>
+<script src="js/chemistry.js"></script>
+<script src="js/chemistry-lab.js"></script>
+<script src="js/chemistry-templates.js"></script>
 </body>
 </html>
