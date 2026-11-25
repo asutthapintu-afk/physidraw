@@ -63,12 +63,13 @@ aside{background:var(--panel);min-height:0;display:flex;flex-direction:column}
 .cat{margin-top:10px}
 .cat h4{margin:6px 2px 6px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;justify-content:space-between}
 .cat h4 span{color:var(--faint);font-weight:500}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.item{border:1px solid var(--line);border-radius:9px;background:#fff;padding:6px 4px 5px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:grab;user-select:none;transition:border-color .12s,box-shadow .12s,transform .12s}
-.item:hover{border-color:var(--acc3);box-shadow:0 2px 8px rgba(79,70,229,.12);transform:translateY(-1px)}
-.item:active{cursor:grabbing}
-.item svg{width:62px;height:46px;display:block}
-.item span{font-size:10.5px;line-height:1.2;text-align:center;color:var(--ink2);height:25px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.item{border:1px solid #e6e9ef;border-radius:12px;background:#fff;padding:8px 5px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:grab;user-select:none;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease,background .18s ease}
+.item:hover{border-color:#d4d0ff;box-shadow:0 6px 16px rgba(79,70,229,.10);transform:translateY(-2px)}
+.item.on{border-color:#a5a0ff;background:#f7f6ff;box-shadow:0 0 0 2px rgba(124,108,255,.18)}
+.item:active{cursor:grabbing;transform:translateY(0)}
+.item svg{width:100%;height:56px;display:block;pointer-events:none}
+.item span{font-size:11px;font-weight:500;line-height:1.25;text-align:center;color:#334155;min-height:27px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .empty-note{color:var(--muted);padding:20px 6px;text-align:center}
 /* ---------- canvas ---------- */
 #wrap{position:relative;min-width:0;min-height:0;overflow:hidden;background:var(--bg)}
@@ -524,21 +525,196 @@ def('mech','cart_flag','รถทดลอง + แผ่นบังแสง',
 def('lab','photogate_stand','โฟโตเกตพร้อมขาตั้ง','photogate on stand light gate',60,170,{f:'#334155',s:'#0f172a',al:'โฟโต้เกจ โฟโต้เกต โฟโตเกจ photo gate'},p=>rc(10,158,40,12,p,'#64748b',2)+rc(27,46,6,114,p,'#cbd5e1')+rc(19,86,22,12,p,'#64748b',2)+sh('M4,0H18V34H42V0H56V48H4Z',p)+ln('M18,14H42',{s:'#ef4444',sw:p.sw*.8},'stroke-dasharray="3 2"')+ci(13,14,2.5,thin(p,.3),'#ef4444'));
 def('lab','photogate_timer','เครื่องจับเวลาโฟโตเกต','photogate timer digital timer',130,70,{f:'#e2e8f0',s:'#334155',al:'โฟโต้เกจ โฟโต้เกต จับเวลา timer'},p=>rc(0,0,130,70,p,undefined,6)+`<rect x="10" y="10" width="78" height="26" rx="3" fill="#111827"/>`+tx(49,23.5,'0.1253 s',12,'#4ade80',{b:1})+ci(106,18,6,p,'#cbd5e1')+ci(106,18,2,thin(p,.3),p.s)+ci(106,40,6,p,'#cbd5e1')+ci(106,40,2,thin(p,.3),p.s)+tx(118,18,'A',8,p.s,{b:1})+tx(118,40,'B',8,p.s,{b:1})+rc(10,46,22,14,thin(p,.6),'#22c55e',3)+rc(38,46,22,14,thin(p,.6),'#ef4444',3)+rc(66,46,22,14,thin(p,.6),'#cbd5e1',3));
 
-/* People, animals, trees */
-const SKIN='#f2c29b',HAIR='#3b2416';
-const face=(p,cx,cy,r)=>ci(cx-r*.38,cy+r*.08,r*.1,{s:'none',sw:0},'#1f2937')+ci(cx+r*.38,cy+r*.08,r*.1,{s:'none',sw:0},'#1f2937')+ln(`M${R2(cx-r*.32)},${R2(cy+r*.42)}Q${cx},${R2(cy+r*.68)} ${R2(cx+r*.32)},${R2(cy+r*.42)}`,{s:'#9a3412',sw:p.sw*.6});
-def('life','boy','เด็กผู้ชาย','boy child kid student',60,120,{f:'#60a5fa',s:'#1f2937',al:'คน เด็ก นักเรียน person'},p=>{const o=thin(p,.6);return rc(21,84,7,26,o,SKIN,2)+rc(32,84,7,26,o,SKIN,2)+rc(17,107,13,8,o,'#1f2937',3)+rc(30,107,13,8,o,'#1f2937',3)+sh('M18,68H42V90H31V83H29V90H18Z',o,'#1e3a8a')+rc(9,38,8,32,o,SKIN,4)+rc(43,38,8,32,o,SKIN,4)+rc(8,36,10,13,o,p.f,4)+rc(42,36,10,13,o,p.f,4)+rc(27,26,6,10,o,SKIN)+rc(16,34,28,38,o,p.f,7)+ci(30,17,13,o,SKIN)+sh('M17,17Q16,3 30,3Q44,3 43,17Q40,9 30,9Q21,9 17,17Z',o,HAIR)+face(p,30,17,13);});
-def('life','girl','เด็กผู้หญิง','girl child kid student',60,120,{f:'#f472b6',s:'#1f2937',al:'คน เด็ก นักเรียน person'},p=>{const o=thin(p,.6);return sh('M15,18Q15,2 30,2Q45,2 45,18V40Q38,35 30,35Q22,35 15,40Z',o,HAIR)+rc(22,84,6,26,o,SKIN,2)+rc(32,84,6,26,o,SKIN,2)+rc(18,107,12,8,o,'#be123c',3)+rc(30,107,12,8,o,'#be123c',3)+rc(8,38,7,30,o,SKIN,3.5)+rc(45,38,7,30,o,SKIN,3.5)+rc(27,26,6,10,o,SKIN)+sh('M19,34H41L49,88H11Z',o,p.f)+ci(30,17,12.5,o,SKIN)+sh('M17,15Q19,5 30,5Q41,5 43,15Q36,10 30,11Q22,11 17,15Z',o,HAIR)+ci(42,6,3.5,o,'#ef4444')+ci(47,8,3,o,'#ef4444')+face(p,30,17,12.5);});
-def('life','man','ผู้ชาย','man adult person teacher',70,170,{f:'#22c55e',s:'#1f2937',al:'คน ผู้ใหญ่ ครู person'},p=>{const o=thin(p,.6);return sh('M20,98H50V160H37V112H33V160H20Z',o,'#334155')+rc(15,157,20,9,o,'#111827',3)+rc(35,157,20,9,o,'#111827',3)+rc(7,44,11,52,o,p.f,5.5)+rc(52,44,11,52,o,p.f,5.5)+ci(12.5,99,5.5,o,SKIN)+ci(57.5,99,5.5,o,SKIN)+rc(31,32,8,10,o,SKIN)+rc(17,40,36,62,o,p.f,9)+ci(35,20,15,o,SKIN)+sh('M20,19Q19,3 35,3Q51,3 50,19Q46,10 35,10Q24,10 20,19Z',o,HAIR)+face(p,35,20,15);});
-def('life','woman','ผู้หญิง','woman adult person teacher',70,170,{f:'#fbbf24',s:'#1f2937',al:'คน ผู้ใหญ่ ครู person'},p=>{const o=thin(p,.6);return sh('M18,22Q18,3 35,3Q52,3 52,22V56Q44,50 35,50Q26,50 18,56Z',o,HAIR)+rc(26,118,7,42,o,SKIN,3)+rc(37,118,7,42,o,SKIN,3)+rc(22,157,13,9,o,'#7c2d12',3)+rc(36,157,13,9,o,'#7c2d12',3)+sh('M20,90H50L57,126H13Z',o,'#7c3aed')+rc(10,44,9,46,o,p.f,4.5)+rc(51,44,9,46,o,p.f,4.5)+ci(14.5,93,4.5,o,SKIN)+ci(55.5,93,4.5,o,SKIN)+rc(31,32,8,10,o,SKIN)+rc(19,40,32,56,o,p.f,9)+ci(35,20,14,o,SKIN)+sh('M21,17Q23,6 35,6Q47,6 49,17Q41,11 35,12Q27,12 21,17Z',o,HAIR)+face(p,35,20,14);});
-const blob=(shapes,p,fill,edge)=>shapes.map(s=>s.replace('$F',fill).replace('$S',edge).replace('$W',R2(p.sw*2))).join('')+shapes.map(s=>s.replace('$F',fill).replace('$S','none').replace('$W','0')).join('');
-def('life','tree','ต้นไม้','tree leafy round',100,140,{f:'#22c55e',s:'#15803d',al:'ต้นไม้ ธรรมชาติ plant'},p=>sh('M44,140V92L32,74M44,100L56,82M56,140V88',{...p,s:'#78350f'},'none')+rc(42,80,16,60,{s:'#78350f',sw:p.sw*.6},'#92400e',3)+blob(['<circle cx="50" cy="48" r="30" fill="$F" stroke="$S" stroke-width="$W"/>','<circle cx="27" cy="62" r="21" fill="$F" stroke="$S" stroke-width="$W"/>','<circle cx="73" cy="62" r="21" fill="$F" stroke="$S" stroke-width="$W"/>','<circle cx="50" cy="26" r="22" fill="$F" stroke="$S" stroke-width="$W"/>'],p,p.f,p.s)+ci(40,40,5,{s:'none',sw:0},'#4ade80')+ci(62,56,4,{s:'none',sw:0},'#4ade80'));
-def('life','pine','ต้นสน','pine tree conifer',80,150,{f:'#15803d',s:'#14532d',al:'ต้นไม้ ธรรมชาติ plant'},p=>rc(34,118,12,32,{s:'#451a03',sw:p.sw*.6},'#78350f',2)+blob(['<path d="M40,0L66,46H14Z" fill="$F" stroke="$S" stroke-width="$W" stroke-linejoin="round"/>','<path d="M40,26L72,82H8Z" fill="$F" stroke="$S" stroke-width="$W" stroke-linejoin="round"/>','<path d="M40,56L78,122H2Z" fill="$F" stroke="$S" stroke-width="$W" stroke-linejoin="round"/>'],p,p.f,p.s));
-def('life','palm','ต้นมะพร้าว','palm coconut tree',120,170,{f:'#16a34a',s:'#14532d',al:'ต้นไม้ ธรรมชาติ plant'},p=>sh('M56,170Q50,110 66,58L74,60Q62,112 70,170Z',{s:'#713f12',sw:p.sw*.6},'#a16207')+ln('M57,150H69M58,130H68M60,110H70M63,90H72M66,72H74',{s:'#713f12',sw:p.sw*.5})+[ 'M70,58Q40,26 4,46Q40,36 70,62Z','M70,58Q100,24 118,44Q96,34 72,62Z','M70,58Q58,20 30,8Q60,22 68,60Z','M70,58Q86,18 112,14Q88,26 72,60Z','M70,58Q46,58 22,84Q48,62 70,62Z','M70,58Q98,58 112,86Q92,62 70,62Z'].map(d=>sh(d,thin(p,.6))).join('')+ci(64,64,5,thin(p,.5),'#78350f')+ci(73,66,5,thin(p,.5),'#78350f'));
-def('life','dog','สุนัข','dog animal pet',120,90,{f:'#d6a46a',s:'#7c4a21',al:'หมา สัตว์ animal'},p=>{const o=thin(p,.7);return ln('M26,44Q8,36 12,18',{s:p.s,sw:p.sw*3.2})+ln('M26,44Q8,36 12,18',{s:p.f,sw:p.sw*2})+rc(30,52,9,34,o,p.f,3)+rc(43,52,9,34,o,p.f,3)+rc(68,52,9,34,o,p.f,3)+rc(80,52,9,34,o,p.f,3)+`<ellipse cx="57" cy="48" rx="34" ry="16" fill="${p.f}" stroke="${p.s}" stroke-width="${R2(o.sw)}"/>`+ci(94,30,15,o)+`<ellipse cx="107" cy="36" rx="10" ry="7.5" fill="${p.f}" stroke="${p.s}" stroke-width="${R2(o.sw)}"/>`+ci(115,33,3,{s:'none',sw:0},'#111827')+sh('M84,20Q76,32 82,48Q92,38 92,22Z',o,'#92400e')+ci(98,26,2.2,{s:'none',sw:0},'#111827')+ln('M104,42Q108,44 112,41',{s:'#111827',sw:o.sw});});
-def('life','cat','แมว','cat animal pet kitten',90,100,{f:'#9ca3af',s:'#374151',al:'สัตว์ animal'},p=>{const o=thin(p,.7);return ln('M26,92Q4,90 10,62',{s:p.s,sw:p.sw*3.4})+ln('M26,92Q4,90 10,62',{s:p.f,sw:p.sw*2.2})+sh('M30,96Q14,96 18,70Q22,44 44,42Q64,44 66,70Q70,96 54,96Z',o)+sh('M32,22L34,4L45,15Z',o)+sh('M49,15L60,4L62,22Z',o)+ci(47,30,17,o)+`<ellipse cx="41" cy="28" rx="2.6" ry="3.6" fill="#16a34a"/><ellipse cx="53" cy="28" rx="2.6" ry="3.6" fill="#16a34a"/>`+nf('M45,35H49L47,38Z','#f472b6')+ln('M30,36L42,37M30,40L42,39M64,36L52,37M64,40L52,39',{s:'#374151',sw:o.sw*.6});});
-def('life','bird','นก','bird animal',80,60,{f:'#38bdf8',s:'#075985',al:'สัตว์ animal'},p=>{const o=thin(p,.7);return ln('M34,46V57M42,46V57M30,57H38M38,57H46',{s:'#d97706',sw:o.sw*1.2})+sh('M18,30L2,20L6,38Z',o)+`<ellipse cx="38" cy="32" rx="22" ry="14" fill="${p.f}" stroke="${p.s}" stroke-width="${R2(o.sw)}"/>`+ci(58,22,11,o)+sh('M67,19L79,24L67,28Z',o,'#f59e0b')+sh('M24,28Q38,16 52,30Q38,42 24,28Z',o,'#0284c7')+ci(61,20,2,{s:'none',sw:0},'#111827');});
-def('life','fish','ปลา','fish animal',90,50,{f:'#fb923c',s:'#9a3412',al:'สัตว์ animal'},p=>{const o=thin(p,.7);return sh('M14,25L0,8V42Z',o)+sh('M36,12Q46,-2 56,12Z',o)+`<ellipse cx="44" cy="25" rx="32" ry="16" fill="${p.f}" stroke="${p.s}" stroke-width="${R2(o.sw)}"/>`+ln('M58,14Q52,25 58,36',o)+ci(66,21,3.4,o,'#fff')+ci(67,21,1.6,{s:'none',sw:0},'#111827');});
+/* People, animals, trees — Modern Educational Vector Cartoon style (v2).
+   Keys and frame sizes are unchanged so older .json projects open exactly as before. */
+const shade=(c,k)=>{if(!/^#[0-9a-f]{6}$/i.test(c||''))return c;const n=parseInt(c.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;const t=k<0?0:255,a=Math.abs(k);r=Math.round(r+(t-r)*a);g=Math.round(g+(t-g)*a);b=Math.round(b+(t-b)*a);return '#'+((1<<24)|(r<<16)|(g<<8)|b).toString(16).slice(1);};
+const OL=p=>({s:p.s,sw:Math.max(.5,p.sw*.62)});
+const NOS={s:'none',sw:0};
+const Pz=(d,f,o,x='')=>sh(d,o||NOS,f,x);
+const Fz=(d,f,x='')=>nf(d,f,x);
+const Ez=(cx,cy,rx,ry,f,o,x='')=>`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${f}" stroke="${o?o.s:'none'}" stroke-width="${o?R2(o.sw):0}" ${x}/>`;
+const Cz=(cx,cy,r,f,o)=>ci(cx,cy,r,o||NOS,f);
+const Lz=(d,c,w,x='')=>`<path d="${d}" fill="none" stroke="${c}" stroke-width="${R2(w)}" stroke-linecap="round" stroke-linejoin="round" ${x}/>`;
+const SK='#fdd9b9',SK2='#f3bf97',HR='#5b3a24',HR2='#7d5236',BLUSH='#fb9aa8',INK='#2b2a33';
+const mirrorX=(d,W)=>d.replace(/(-?\d+\.?\d*),(-?\d+\.?\d*)/g,(m,x,y)=>R2(W-x)+','+y);
+const eyes=(xl,xr,y,o,rx=2.1,ry=2.6)=>Ez(xl,y,rx,ry,INK)+Ez(xr,y,rx,ry,INK)+Cz(xl+.7,y-.9,.8,'#fff')+Cz(xr+.7,y-.9,.8,'#fff');
+const cheeks=(xl,xr,y)=>Ez(xl,y,2.8,1.7,BLUSH,null,'opacity=".6"')+Ez(xr,y,2.8,1.7,BLUSH,null,'opacity=".6"');
+const openSmile=(cx,y,w,o)=>Pz(`M${cx-w},${y}Q${cx},${y+w*1.45} ${cx+w},${y}Q${cx},${y+w*.35} ${cx-w},${y}Z`,'#b4232a',o)+Fz(`M${cx-w*.5},${y+w*.75}Q${cx},${y+w*.35} ${cx+w*.5},${y+w*.75}Q${cx},${y+w*1.2} ${cx-w*.5},${y+w*.75}Z`,'#f87171');
+const groundPatch=(cx,cy,rx)=>Ez(cx,cy,rx,rx*.12,'#a7e3a0',null,'opacity=".55"');
+const grass=(x,y,c='#4caf50')=>Fz(`M${x},${y}L${x+1.5},${y-6}L${x+3},${y-1}L${x+4.5},${y-7}L${x+6},${y-1}L${x+7.5},${y-5}L${x+9},${y}Z`,c);
+
+def('life','boy','เด็กผู้ชาย','boy child kid student',60,120,{f:'#3b82f6',s:INK,al:'คน เด็ก นักเรียน person'},p=>{const o=OL(p),F=p.f,F2=shade(p.f,-.22);return [
+  Pz('M21.5,90H27.5V101H21.5Z',SK,o),Pz('M32.5,90H38.5V101H32.5Z',SK,o),
+  Pz('M21,98.5H28V105H21Z','#fff',o),Pz('M32,98.5H39V105H32Z','#fff',o),Lz('M21.5,101H27.5M32.5,101H38.5','#93c5fd',1),
+  Pz('M17.5,111Q17.5,105 22.5,105H27.5Q29.5,105 29.5,107.5V113H17.5Z',F,o),Pz('M30.5,107.5Q30.5,105 32.5,105H37.5Q42.5,105 42.5,111V113H30.5Z',F,o),
+  Pz('M17,112.5H30V116Q30,117 29,117H18Q17,117 17,116Z','#e5e7eb',o),Pz('M30,112.5H43V116Q43,117 42,117H31Q30,117 30,116Z','#e5e7eb',o),
+  Pz('M18.2,73H41.8L42.8,89.6Q42.8,91 41.4,91H32.4Q31.1,91 30.9,89.6L30,80L29.1,89.6Q28.9,91 27.6,91H18.6Q17.2,91 17.2,89.6Z','#1e3a8a',o),
+  Fz('M36,74H41.6L42.4,89.4Q42.2,90.4 41.2,90.4H38Z','#172e6e'),
+  Pz('M13.4,55Q11.8,63.5 12.5,70.5Q14.6,72.6 16.8,70.5Q17.6,63.5 18.8,57Z',SK,o),Pz(mirrorX('M13.4,55Q11.8,63.5 12.5,70.5Q14.6,72.6 16.8,70.5Q17.6,63.5 18.8,57Z',60),SK,o),
+  Cz(14.7,71.8,3.3,SK,o),Cz(45.3,71.8,3.3,SK,o),
+  Pz('M26.5,39H33.5V46H26.5Z',SK2,o),
+  Pz('M19,49Q19,45 23.5,44.5H36.5Q41,45 41,49L42,73Q42,75 40,75H20Q18,75 18,73Z',F,o),
+  Fz('M36.5,45.6Q40.4,46.2 40.5,49.6L41.3,73Q41,74.3 39.6,74.3H37.2Z',F2),
+  Pz('M20,46Q14.8,47 12.6,55.4L19,58L20.6,52Z',F,o),Pz(mirrorX('M20,46Q14.8,47 12.6,55.4L19,58L20.6,52Z',60),F,o),
+  Lz('M13.1,55.3L18.8,57.6','#fff',1.4),Lz(mirrorX('M13.1,55.3L18.8,57.6',60),'#fff',1.4),
+  Pz('M24.2,44.8Q25,50.2 30,48.6Q35,50.2 35.8,44.8Q30,46.6 24.2,44.8Z','#fff',o),
+  Cz(13.8,27,3.6,SK,o),Cz(46.2,27,3.6,SK,o),Cz(13.8,27,1.6,SK2),Cz(46.2,27,1.6,SK2),
+  Cz(30,25,16.4,SK,o),
+  Pz('M13.6,26C12,11 20,4.8 30,4.8C40.5,4.8 48,11 46.4,26C45,21 43,18.4 40,16.8C37,20.6 31.4,21.2 27,18.4C23.8,21 18.4,22.6 13.6,26Z',HR,o),
+  Pz('M24,7.2Q26.5,0.8 33.5,3.6Q30,4.8 29.2,7.4Z',HR,o),Lz('M19.5,11.5Q24.5,7.6 31,8.2',HR2,1.3),
+  Lz('M21.4,23.6Q24,22.2 26.6,23.3M33.4,23.3Q36,22.2 38.6,23.6',HR,1),
+  eyes(24.2,35.8,28.5,o),cheeks(20.4,39.6,33),openSmile(30,33.4,3.6,o)].join('');});
+
+def('life','girl','เด็กผู้หญิง','girl child kid student',60,120,{f:'#f472b6',s:INK,al:'คน เด็ก นักเรียน person'},p=>{const o=OL(p),F=p.f,F2=shade(p.f,-.2),F3=shade(p.f,.55);return [
+  Pz('M12.5,28C11,12 19,4.8 30,4.8C41,4.8 49,12 47.5,28L48.6,45Q46,49 41.8,46.6L41,36H19L18.2,46.6Q14,49 11.4,45Z',HR,o),
+  Pz('M22,88H27.5V100H22Z',SK,o),Pz('M32.5,88H38V100H32.5Z',SK,o),
+  Pz('M21.5,97.5H28V104H21.5Z','#fff',o),Pz('M32,97.5H38.5V104H32Z','#fff',o),
+  Pz('M18.5,110.5Q18.5,104.5 23,104.5H27.5Q29,104.5 29,107V113H18.5Z','#ec4899',o),Pz('M31,107Q31,104.5 32.5,104.5H37Q41.5,104.5 41.5,110.5V113H31Z','#ec4899',o),
+  Lz('M22,106.6H28M32,106.6H38','#be185d',1),Pz('M18,112.5H29.5V116Q29.5,117 28.5,117H19Q18,117 18,116Z','#fce7f3',o),Pz('M30.5,112.5H42V116Q42,117 41,117H31.5Q30.5,117 30.5,116Z','#fce7f3',o),
+  Pz('M14.6,54Q13.2,62.5 13.8,69.5Q15.8,71.6 17.8,69.5Q18.6,62.5 19.6,56Z',SK,o),Pz(mirrorX('M14.6,54Q13.2,62.5 13.8,69.5Q15.8,71.6 17.8,69.5Q18.6,62.5 19.6,56Z',60),SK,o),
+  Cz(15.8,70.8,3.1,SK,o),Cz(44.2,70.8,3.1,SK,o),
+  Pz('M27,39H33V46H27Z',SK2,o),
+  Pz('M21,48Q21,44.5 25,44.5H35Q39,44.5 39,48L40,63L46.6,87.2Q46.8,89.6 44.4,89.6H15.6Q13.2,89.6 13.4,87.2L20,63Z',F,o),
+  Fz('M34.5,45.4Q38.2,45.6 38.3,48.4L39.3,63.4L45.8,87.2Q45.8,88.8 44.2,88.8H38.5L36.5,63.5Z',F2),
+  Lz('M20.2,63.2H39.8',F2,1.4),Lz('M14.6,86.6H45.4','#fff',1.6),Cz(30,52.5,1.1,'#fff'),Cz(30,57.5,1.1,'#fff'),
+  Pz('M21.2,46.2Q14.2,46.6 14,53.6Q17.4,57.2 21.4,54.6Z',F3,o),Pz(mirrorX('M21.2,46.2Q14.2,46.6 14,53.6Q17.4,57.2 21.4,54.6Z',60),F3,o),
+  Pz('M24.4,44.8Q25,50 30,48.4Q35,50 35.6,44.8Q30,46.5 24.4,44.8Z','#fff',o),
+  Cz(30,25,15.6,SK,o),
+  Pz('M14.4,26.5C13.4,12 21,6.6 30,6.6C39,6.6 46.6,12 45.6,26.5C43.2,20.4 40,17.6 35,16.6C33,19.2 28.6,20.6 24.4,19C21,21.2 17,23 14.4,26.5Z',HR,o),
+  Lz('M19.5,11.8Q24.5,8 30.5,8.4',HR2,1.2),
+  Pz('M40.5,9.2L33.6,4Q32,9.2 33.8,14Z','#f43f5e',o),Pz('M40.5,9.2L47.4,4Q49,9.2 47.2,14Z','#f43f5e',o),Cz(40.5,9.2,2.3,'#e11d48',o),
+  Lz('M21.6,23.8Q24,22.5 26.4,23.6M33.6,23.6Q36,22.5 38.4,23.8',HR,1),
+  eyes(24.4,35.6,28.6,o),cheeks(20.6,39.4,33),openSmile(30,33.4,3.3,o)].join('');});
+
+def('life','man','ผู้ชาย','man adult person teacher',70,170,{f:'#22c55e',s:INK,al:'คน ผู้ใหญ่ ครู person'},p=>{const o=OL(p),F=p.f,F2=shade(p.f,-.22),F3=shade(p.f,.25);return [
+  Pz('M19.5,100H50.5L50,157H37.5L35.6,110L35,108L34.4,110L32.5,157H20Z','#2f4a6d',o),
+  Fz('M42,101H50.3L49.8,156.4H44.5Z','#263d5a'),Lz('M27,104V154M43,104V154','#3d5b82',.8),
+  Pz('M17,163Q17,156.6 22.5,156.6H32.5Q34,156.6 34,159V165.5H17Z','#2b2a33',o),Pz('M36,159Q36,156.6 37.5,156.6H47.5Q53,156.6 53,163V165.5H36Z','#2b2a33',o),
+  Lz('M17.4,163.5H33.6M36.4,163.5H52.6','#57534e',1),
+  Pz('M20.4,46Q13.8,48.4 12.6,60L11.6,88.5H19.2L20.4,60Z',F,o),Pz(mirrorX('M20.4,46Q13.8,48.4 12.6,60L11.6,88.5H19.2L20.4,60Z',70),F,o),
+  Fz('M17.5,52L19.4,60L18.6,88H17Z',F2),
+  Pz('M11.3,86.6H19.4V90.6H11.3Z',F2,o),Pz(mirrorX('M11.3,86.6H19.4V90.6H11.3Z',70),F2,o),
+  Cz(15.4,94,3.9,SK,o),Cz(54.6,94,3.9,SK,o),
+  Pz('M31,35.5H39V43H31Z',SK2,o),
+  Pz('M20,48Q20,43 25.5,42.5H44.5Q50,43 50,48L50.5,97H19.5Z',F,o),
+  Fz('M43,43.4Q49,44 49.2,48.4L49.7,96.4H44.5Z',F2),
+  Lz('M35,49V95.5',F2,1),Cz(35,56,1.1,F2),Cz(35,66,1.1,F2),Cz(35,76,1.1,F2),Cz(35,86,1.1,F2),
+  Pz('M39.5,55H46.5V62Q43,63.5 39.5,62Z','none',{s:F2,sw:o.sw}),
+  Pz('M28,42.6L35,49.2L42,42.6L39.6,40.6L35,45L30.4,40.6Z',F3,o),
+  Pz('M19.5,95.5H50.5V101H19.5Z','#4a3426',o),Pz('M32.4,96.2H37.6V100.3H32.4Z','#d4a017',o),
+  Cz(19.6,24,3.6,SK,o),Cz(50.4,24,3.6,SK,o),Cz(19.6,24,1.5,SK2),Cz(50.4,24,1.5,SK2),
+  Cz(35,22.5,15.4,SK,o),
+  Pz('M19.6,23.8C18,9.6 25.6,4.4 35,4.4C45,4.4 52.4,9.8 50.4,23.8C49.6,18.6 47.6,15.4 44.6,13.8C39.8,16.6 32.6,16.4 27.6,13.4C24.6,16 21.4,19 19.6,23.8Z',HR,o),
+  Lz('M24,9Q30,5.6 38,6.4',HR2,1.3),
+  Lz('M26.6,20.4Q29.2,19 31.8,20.2M38.2,20.2Q40.8,19 43.4,20.4',HR,1.1),
+  eyes(29.4,40.6,25.2,o,1.9,2.4),cheeks(25.6,44.4,29.6),Lz('M30.4,30.6Q35,35 39.6,30.6',INK,1.2),Fz('M31.4,31.4Q35,34.4 38.6,31.4Q35,32.6 31.4,31.4Z','#b4232a')].join('');});
+
+def('life','woman','ผู้หญิง','woman adult person teacher',70,170,{f:'#facc15',s:INK,al:'คน ผู้ใหญ่ ครู person'},p=>{const o=OL(p),F=p.f,F2=shade(p.f,-.18),SKT='#8b5cf6';return [
+  Pz('M18,26C16.5,9 25,4.4 35,4.4C45,4.4 53.5,9 52,26L53.6,51Q50,56 45,52.6L44,38H26L25,52.6Q20,56 16.4,51Z',HR,o),
+  Pz('M27,118H33.5V157H27Z',SK,o),Pz('M36.5,118H43V157H36.5Z',SK,o),
+  Pz('M23,162.5Q23,156.6 27.6,156.6H33.8V164.5H23Z','#4b2e2a',o),Pz('M36.2,156.6H42.4Q47,156.6 47,162.5V164.5H36.2Z','#4b2e2a',o),
+  Pz('M15.4,58Q13.8,74 14.4,88Q16.4,90.6 18.8,88Q19.8,74 21.4,60Z',SK,o),Pz(mirrorX('M15.4,58Q13.8,74 14.4,88Q16.4,90.6 18.8,88Q19.8,74 21.4,60Z',70),SK,o),
+  Cz(16.6,90.6,3.7,SK,o),Cz(53.4,90.6,3.7,SK,o),
+  Pz('M21,93H49L55.2,123.6Q55.4,126 53,126H17Q14.6,126 14.8,123.6Z',SKT,o),
+  Fz('M42,93.6H48.6L54.4,123.4Q54.4,125.2 52.8,125.2H46.5Z',shade(SKT,-.2)),Lz('M28,97L25.5,124M35,97V124.5M42,97L44.5,124',shade(SKT,-.2),.9),
+  Pz('M31.5,35.5H38.5V43H31.5Z',SK2,o),
+  Pz('M22,48Q22,43 27,42.5H43Q48,43 48,48L49,95H21Z',F,o),
+  Fz('M42,43.4Q47,44 47.2,48.4L48.2,94.4H43.5Z',F2),Cz(35,55,1.1,F2),Cz(35,64,1.1,F2),Cz(35,73,1.1,F2),
+  Pz('M22.2,46Q15,47 14.8,58.6L21.6,60.6Z',F,o),Pz(mirrorX('M22.2,46Q15,47 14.8,58.6L21.6,60.6Z',70),F,o),
+  Pz('M28.4,42.7Q29.4,48.6 35,47.2Q40.6,48.6 41.6,42.7Q35,44.6 28.4,42.7Z','#fff',o),
+  Cz(35,22,14.8,SK,o),
+  Cz(20.8,30.2,1.7,'#fde68a',o),Cz(49.2,30.2,1.7,'#fde68a',o),
+  Pz('M20.2,24.5C19.4,10 27,6.4 35,6.4C43,6.4 50.6,10 49.8,24.5C47,18 43,15 37.2,14.4C33,17.6 27,19.4 20.2,24.5Z',HR,o),
+  Lz('M25,10.4Q30,7.4 36.5,7.8',HR2,1.3),
+  Lz('M26.8,20.2Q29.4,18.9 32,20M38,20Q40.6,18.9 43.2,20.2',HR,1),
+  eyes(29.4,40.6,24.8,o,1.95,2.5),cheeks(25.6,44.4,29.4),openSmile(35,29.8,3,o)].join('');});
+
+def('life','tree','ต้นไม้','tree leafy round',100,140,{f:'#5cbf4a',s:'#2f5d2a',al:'ต้นไม้ ธรรมชาติ plant'},p=>{const o=OL(p),F=p.f,D=shade(p.f,-.25),L=shade(p.f,.35);
+  const C=[[50,45,30],[25,57,22],[75,57,22],[31,32,19],[69,32,19],[50,20,19],[16,75,13],[84,75,13],[50,75,20],[33,79,15],[67,79,15]];
+  const ring=(f,k,dx,dy,st)=>C.map(([x,y,r])=>`<circle cx="${R2(x+dx)}" cy="${R2(y+dy)}" r="${R2(r+k)}" fill="${f}" stroke="${st?p.s:'none'}" stroke-width="${st?R2(o.sw*2):0}"/>`).join('');
+  return [groundPatch(50,137,40),
+  Pz('M38,137Q43.5,130 43.5,114L31,100L35,96L45,105L46,86H54L55,105L65,96L69,100L56.5,114Q56.5,130 62,137Z','#a0632f',o),Fz('M52.5,88H54L55,105L65,96L67.8,98.8L55.6,113.6Q55.6,130 60.4,136.4H54Q53.4,120 52.5,88Z','#85502a'),
+  grass(22,137),grass(68,137),grass(38,138.5,'#3f9a33'),
+  ring(D,0,0,0,true),ring(D,0,0,0,false),ring(F,-3,-1.5,-3,false),
+  Ez(39,21,8.5,4.8,L,null,'transform="rotate(-20 39 21)"'),Ez(66,27,6.5,3.8,L,null,'transform="rotate(-15 66 27)"'),Ez(22,49,6.5,3.8,L,null,'transform="rotate(-25 22 49)"'),Ez(50,46,5.5,3.2,L,null),Ez(76,54,5,3,L,null,'transform="rotate(-15 76 54)"'),
+  Lz('M44,35Q47,38.5 50,35M58,56Q61,59.5 64,56M28,64Q31,67.5 34,64M66,40Q69,43.5 72,40M46,68Q49,71.5 52,68',D,1.2)].join('');});
+
+def('life','pine','ต้นสน','pine tree conifer',80,150,{f:'#3a9d4a',s:'#1f4d27',al:'ต้นไม้ ธรรมชาติ plant'},p=>{const o=OL(p),F=p.f,D=shade(p.f,-.25),L=shade(p.f,.3);
+  const tier=(y0,y1,hw)=>{const n=Math.max(3,Math.round(hw/8)),step=hw*2/n;let d=`M40,${y0}L${R2(40+hw)},${R2(y1-3)}`;for(let i=0;i<n;i++){const xa=40+hw-step*i,xb=xa-step;d+=`Q${R2((xa+xb)/2)},${R2(y1+7)} ${R2(xb)},${R2(y1-3)}`;}return d+'Z';};
+  const T=[[2,34,13],[14,56,20],[30,80,27],[48,103,33],[66,124,38]];
+  const layers=T.slice().reverse().map(([a,b,c],k)=>(k?`<path d="${tier(a,b,c)}" fill="${D}" transform="translate(0 3.2)"/>`:'')+`<path d="${tier(a,b,c)}" fill="${F}" stroke="${p.s}" stroke-width="${R2(o.sw)}" stroke-linejoin="round"/>`+`<path d="M40,${a+3}L${R2(40+c*.9)},${R2(b-4)}L${R2(40+c*.35)},${R2(b+1)}Z" fill="${D}" opacity=".35"/>`+Lz(`M${R2(40-c*.12)},${R2(a+(b-a)*.35)}L${R2(40-c*.5)},${R2(b-5)}`,L,1.5)).join('');
+  return [groundPatch(40,147,34),Pz('M34,118H46V147H34Z','#8b5a2b',o),Fz('M41,119H45.4V146.4H41Z','#6f4521'),grass(12,148),grass(58,148),layers].join('');});
+
+def('life','palm','ต้นมะพร้าว','palm coconut tree',120,170,{f:'#4caf50',s:'#22512a',al:'ต้นไม้ ธรรมชาติ plant'},p=>{const o=OL(p),F=p.f,D=shade(p.f,-.28),L=shade(p.f,.3),TR='#a86b34';
+  const back=['M64,58C50,24 30,14 13,18C30,30 46,44 60,65Z','M66,58C82,26 104,22 117,30C100,38 84,50 70,65Z','M66,64C85,70 99,86 101,106C88,90 78,81 66,72Z','M64,64C45,72 33,88 31,106C42,90 52,81 64,72Z'];
+  const front=['M65,60C46,32 16,33 2,59C21,51 45,53 64,69Z','M64,58C57,27 68,9 87,3C80,22 77,41 69.5,62Z','M66,60C89,33 112,40 119,65C102,53 86,55 68,69Z'];
+  const rib=['M63,63C46,48 26,48 9,61','M66,59C66,34 72,20 82,10','M68,63C86,50 102,52 114,66'];
+  const rings=[[54,156],[54,146],[55,136],[56.5,126],[58,116],[60,106],[62,96],[64.5,86]].map(([x,y])=>Lz(`M${x-1},${y}Q${x+5},${y-2.6} ${x+11},${y}`,'#7d4b22',.9)).join('');
+  return [groundPatch(60,166,40),grass(34,167),grass(76,167),
+  Pz('M52,166Q46,120 60,76L71,78Q60,122 67,166Z',TR,o),Fz('M62.5,166Q57,122 68.4,78L71,78Q60,122 67,166Z','#8a5527'),rings,
+  back.map(d=>Pz(d,D,o)).join(''),front.map(d=>Pz(d,F,o)).join(''),rib.map(d=>Lz(d,D,1.1)).join(''),
+  Lz('M14,47L12,53M22,44L20.6,50.5M31,43L30,49.6M40,45L39.4,51.6M50,49L49.6,55.6M74,12L79,15M71,22L76.4,24.6M70,33L75.6,35M70,44L75,45.6M84,47L83.6,53.6M94,45L94,51.6M104,47L104.6,53.6M112,53L113.4,59',L,1.3),
+  Cz(60,68,5.6,'#7cb342',o),Cz(70.5,68.5,5.6,'#6fa53b',o),Cz(65,74.5,5.6,'#7cb342',o),Cz(58.4,66.4,1.6,'#b5dd8c'),Cz(68.9,66.9,1.6,'#b5dd8c')].join('');});
+
+def('life','dog','สุนัข','dog animal pet',120,90,{f:'#c98a4b',s:'#3b2a20',al:'หมา สัตว์ animal'},p=>{const o=OL(p),F=p.f,D=shade(p.f,-.22),W='#fff8ee';return [
+  Pz('M39,66C22,64 18,47 27,39C29,46 32,52 42,56Z',F,o),Cz(27.6,40.6,3.4,W,o),
+  Pz('M40,86C30,86 29,67 39,57C46,48 58,45 70,46C84,48 92,60 92,72C92,82 88,86 80,86Z',W,o),
+  Fz('M44,57C50,49 61,46 70,48C67,56 57,62 46,64Z',F),
+  Pz('M37.5,86C33.5,74 41,64 53,67.5C62,71 60.5,86 52,86Z',W,o),Fz('M41,72C44,67 51,66 55,69C53,73 47,75 41,72Z',F),
+  Ez(47,86,9,3.4,W,o),
+  Pz('M66,62H76V83Q76,86 73,86H69Q66,86 66,83Z',W,o),Pz('M79,62H89V83Q89,86 86,86H82Q79,86 79,83Z',W,o),
+  Lz('M69.5,84V86M72.5,84V86M82.5,84V86M85.5,84V86',INK,.8),
+  Pz('M63.5,46.5Q78,54.5 92.5,46.5L92.5,51.5Q78,59.5 63.5,51.5Z','#ef4444',o),Cz(78,57.6,3.1,'#fbbf24',o),Lz('M76.5,57.6H79.5',shade('#fbbf24',-.3),.8),
+  Ez(80,30,21,19,W,o),
+  Fz('M60.5,29C60.5,14 70,8 80,8C92,8 100,15.5 100,26C94.5,20.5 88.5,20.5 84.5,24.5C80,18.5 70,18.5 60.5,29Z',F),
+  Pz('M64,17C53.5,19.5 51.5,36 57.5,46.5C64,46.5 68.5,38 68.5,27.5Z',F,o),Fz('M60,24C56.5,30 56.5,38 59,43.5C62.5,42 64.5,36 64,29Z',D),
+  Pz('M96,15.5C106.5,18 108.5,32 104,42.5C97.5,42.5 93.5,34 93.5,25.5Z',F,o),Fz('M100,22C104,27 104.5,34 102.5,39C99.5,37.5 98,32 98.5,26.5Z',D),
+  Ez(85,38,11.5,8.2,'#fffdf8',o),Ez(88.5,32.6,4.2,3.2,INK),Cz(87.2,31.6,1,'#fff'),
+  Lz('M84.5,38Q88.5,42.5 92.5,38',INK,1),Pz('M86,40.4Q85.6,48.6 89.8,48.6Q93.6,48.6 93,41.2Z','#f472b6',o),Lz('M89.5,42V46.6','#db2777',.8),
+  Ez(73.4,26.4,2.4,2.8,INK),Ez(91.4,25.2,2.2,2.6,INK),Cz(74.1,25.4,.8,'#fff'),Cz(92,24.2,.75,'#fff'),Ez(69.5,34,3,1.8,BLUSH,null,'opacity=".55"')].join('');});
+
+def('life','cat','แมว','cat animal pet kitten',90,100,{f:'#a3a6ae',s:'#33323a',al:'สัตว์ animal'},p=>{const o=OL(p),F=p.f,D=shade(p.f,-.3),W='#ffffff',PK='#f9a8d4';return [
+  Pz('M29,92C10,92 5,76 12,65C14.5,72 17,81 31,83.5Z',F,o),Lz('M10,72L14.5,70.5M11.5,79L16.5,76.5M16,85.5L20.5,82',D,1.3),
+  Pz('M30,96C23.5,96 23.5,74 30,62C34,54 40,52 45,52C50,52 56,54 60,62C66.5,74 66.5,96 60,96Z',F,o),
+  Pz('M38,58Q45,54 52,58Q54.5,74 45,81Q35.5,74 38,58Z',W,null),
+  Lz('M28,72L33,73M27.5,79L32.5,79.5M62,72L57,73M62.5,79L57.5,79.5',D,1.3),
+  Pz('M36,78H44V94Q44,96.4 41.6,96.4H38.4Q36,96.4 36,94Z',F,o),Pz('M46,78H54V94Q54,96.4 51.6,96.4H48.4Q46,96.4 46,94Z',F,o),
+  Ez(40,95,4.8,2.6,W,o),Ez(50,95,4.8,2.6,W,o),
+  Pz('M33,50Q45,57 57,50L57,54.2Q45,61.2 33,54.2Z','#ef4444',o),Cz(45,58.4,3.2,'#fbbf24',o),Lz('M43.6,59.4H46.4',shade('#fbbf24',-.35),.8),
+  Pz('M27,25L28,5.5L41.5,15Z',F,o),Fz('M29.6,20.5L30.2,10.4L38,15.6Z',PK),
+  Pz('M63,25L62,5.5L48.5,15Z',F,o),Fz('M60.4,20.5L59.8,10.4L52,15.6Z',PK),
+  Pz('M24,34C24,18 34,12 45,12C56,12 66,18 66,34C66,46 56,51.6 45,51.6C34,51.6 24,46 24,34Z',F,o),
+  Lz('M41,16.5L42,22M45,15.4V22.4M49,16.5L48,22M24.6,30L29,31M65.4,30L61,31',D,1.3),
+  Ez(45,39,9.4,6.6,W),
+  Lz('M33.6,31.4Q37,27.4 40.4,31.4M49.6,31.4Q53,27.4 56.4,31.4',INK,1.5),
+  Fz('M43.2,35.6H46.8L45,37.8Z','#f472b6'),Lz('M42,39.6Q43.5,41.6 45,39.6Q46.5,41.6 48,39.6',INK,1),
+  Ez(32.5,38,3,1.8,BLUSH,null,'opacity=".6"'),Ez(57.5,38,3,1.8,BLUSH,null,'opacity=".6"'),
+  Lz('M34,38.4L19,36.4M34,41.4L19.5,42.6M56,38.4L71,36.4M56,41.4L70.5,42.6',INK,.8)].join('');});
+
+def('life','bird','นก','bird animal',80,60,{f:'#3b82f6',s:'#1e2a4a',al:'สัตว์ animal'},p=>{const o=OL(p),F=p.f,D=shade(p.f,-.25),L=shade(p.f,.35);return [
+  Lz('M38,47.5V55.5M47,46.5V55.5',  '#d97706',1.6),Lz('M34.5,56H41.5M43.5,56H50.5','#d97706',1.4),
+  Pz('M22,31C12.5,26 6,24 2,26C6,30 6,34 3,40C10,40.5 16,38.5 22,36Z',D,o),Lz('M5,30L19,32M5,36L19,35',L,1),
+  Cz(54,22,13,F,o),Pz('M18,34C18,22 30,14 44,14C56,14 64,20 64,30C64,42 52,48 38,48C26,48 18,44 18,34Z',F,o),Cz(54,22,12.6,F,null),
+  Pz('M29.5,44C36.5,46.6 48.5,46 56.5,40C61,36 61.5,30.6 59,28.6C53,34.4 42.5,38.4 29.5,40Z','#fde047',null),
+  Lz('M29.5,44C36.5,46.6 48.5,46 56.5,40',shade('#fde047',-.25),.9),
+  Pz('M25.5,30C33.5,21.5 46.5,23.5 50.5,30C46.5,38.5 36,42.5 23.5,40.5C29.5,38.5 31.5,34 25.5,30Z',D,o),
+  Lz('M31,32.5Q38,30 45,31.5M30,37Q37,35.5 43,36.4',L,1.1),
+  Pz('M64.8,19.6L76.2,17.4L66.2,24Z','#f59e0b',o),Pz('M66,24.4L74.4,27.2L65,26.4Z','#ea8a0a',o),
+  Ez(57.8,19.4,2.4,2.8,INK),Cz(58.6,18.4,.85,'#fff'),Ez(57,26.4,2.6,1.6,BLUSH,null,'opacity=".6"'),
+  Ez(42,19,6,2.4,L,null,'opacity=".7" transform="rotate(-12 42 19)"')].join('');});
+
+def('life','fish','ปลา','fish animal',90,50,{f:'#fb923c',s:'#3b2418',al:'สัตว์ animal'},p=>{const o=OL(p),F=p.f,D=shade(p.f,-.2),EDGE='#2b2a33';return [
+  Pz('M17,25L2.5,10Q-.5,25 2.5,40Z',F,o),Lz('M3.2,11.6Q.8,25 3.2,38.4',EDGE,1.4),Lz('M8,17L12,22M8,33L12,28',D,1),
+  Pz('M30,11C36,1 52,0 59,8L50,12.4Z',F,o),Lz('M37,5Q38,8 38,10.5M45,3Q46,6.5 46,10M52,3.6Q52.4,7 52,10',D,1),
+  Pz('M36,39.6L31.5,48.4L43,41.6Z',F,o),
+  Ez(46,25,30,16.6,F,o),
+  Pz('M34.4,10.4Q37.4,8.6 40.6,9.2V40.8Q37.4,41.4 34.4,39.6Z','#fff',{s:EDGE,sw:o.sw*1.1}),
+  Pz('M55.6,10.3Q58.6,9.6 61.6,11V39Q58.6,40.4 55.6,39.7Z','#fff',{s:EDGE,sw:o.sw*1.1}),
+  Ez(30,20,5,3,shade(F,.35),null,'opacity=".7"'),
+  Pz('M47.4,29.6C52,35 52,41.4 46,43.4C44,38 44,33.8 47.4,29.6Z',D,o),
+  Cz(66.4,21,4.6,'#fff',o),Cz(67.4,21,2.6,INK),Cz(68.2,20,.9,'#fff'),
+  Lz('M68,30Q71.2,32.2 74.4,29.2',INK,1.1),
+  Cz(84,8,3.2,'#e0f2fe',{s:'#38bdf8',sw:o.sw}),Cz(79.6,15.4,2,'#e0f2fe',{s:'#38bdf8',sw:o.sw}),Cz(85.6,17,1.4,'#e0f2fe',{s:'#38bdf8',sw:o.sw})].join('');});
 
 /* ---- more mechanics ---- */
 def('mech','newton_cradle','ลูกตุ้มนิวตัน','newton cradle momentum collision',200,150,{f:'#cbd5e1',s:'#334155',al:'โมเมนตัม การชน ลูกตุ้มชน'},p=>{let r=rc(0,140,200,10,p,'#64748b',2)+ln('M6,142V8H194V142',thick(p,1.4));const xs=[70,90,110,130,150];xs.forEach((x,i)=>{const bx=i===0?12.6:x,by=i===0?91.9:110;r+=ln(`M${x},8L${bx},${by}`,thin(p,.5))+ci(bx,by,10,thin(p,.7),'url(#none)'.replace('url(#none)','#94a3b8'));});return r+`<path d="M24,70A60,60 0 0 1 46,58" fill="none" stroke="#dc2626" stroke-width="${R2(p.sw*.7)}" stroke-dasharray="3 2"/>`;});
@@ -641,7 +817,7 @@ const ICON={
 
 /* ---------- state ---------- */
 let doc, sel=[], tool='select', view={x:0,y:0,z:1}, ui={grid:true,snap:true};
-let hist=[], hi=-1, clip=[], tcache={}, drag=null, spaceDown=false, hoverAnchor=null, libFilter='all';
+let hist=[], hi=-1, clip=[], tcache={}, drag=null, spaceDown=false, hoverAnchor=null, libFilter='all', libSel='';
 const stage=$('#stage'), vp=$('#viewport'), content=$('#content'), overlay=$('#overlay');
 const GRID=20, SNAP=10;
 const uid=()=>'o'+Math.random().toString(36).slice(2,9);
@@ -1018,8 +1194,8 @@ document.addEventListener('keydown',e=>{
   if(e.key.startsWith('Arrow')&&sel.length){e.preventDefault();const s=e.shiftKey?10:1;const dx=e.key==='ArrowLeft'?-s:e.key==='ArrowRight'?s:0,dy=e.key==='ArrowUp'?-s:e.key==='ArrowDown'?s:0;selObjs().forEach(o=>{moveObj(o,dx,dy);detach(o);});render();clearTimeout(window._nt);window._nt=setTimeout(()=>{commit();renderPanel();},400);return;}
   const map={v:'select',h:'hand',t:'text',l:'line',a:'arrow',w:'wire_s',e:'wire',m:'measure',q:'angle'};if(map[k]){setTool(map[k]);return;}
   if(k==='r'&&sel.length){selObjs().forEach(o=>{if(isBox(o)||o.type==='text')o.rot=(((o.rot||0)+(e.shiftKey?-90:90)+540)%360)-180;});render();renderPanel();commit();return;}
-  if(e.key===']'){order(e.shiftKey?'front':'fwd');return;}
-  if(e.key==='['){order(e.shiftKey?'back':'bwd');return;}
+  if(e.code==='BracketRight'){order(e.shiftKey?'front':'fwd');return;}
+  if(e.code==='BracketLeft'){order(e.shiftKey?'back':'bwd');return;}
   if(k==='g'){ui.grid=!ui.grid;render();renderPanel();queueSave();return;}
 });
 document.addEventListener('keyup',e=>{if(e.code==='Space'){spaceDown=false;if(tool!=='hand')stage.classList.remove('t-hand');}});
@@ -1197,13 +1373,14 @@ function buildChips(){$('#chips').innerHTML=[['all','ทั้งหมด'],...
 function buildLib(){const q=$('#q').value.trim().toLowerCase();let h='';
   for(const[c,n,en]of CATS){if(libFilter!=='all'&&libFilter!==c)continue;const items=LIB.filter(d=>d.cat===c&&(!q||(d.name+' '+d.en+' '+d.key+' '+d.al).toLowerCase().includes(q)));if(!items.length)continue;
     const wb=c==='elec'?`<div class="wirebar"><button data-tool="wire_s" title="ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว (W)">${IC(ICON.wire_s,16)}สายไฟตรง</button><button data-tool="wire" title="สายไฟหักมุมฉาก (E)">${IC(ICON.wire,16)}สายหักมุม</button></div>`:'';
-    h+=`<div class="cat"><h4>${n} <span>${items.length}</span></h4>${wb}<div class="grid3">${items.map(d=>`<div class="item" draggable="true" data-k="${d.key}" title="${esc(d.name)} · ${esc(d.en)}">${thumb(d)}<span>${esc(d.name)}</span></div>`).join('')}</div></div>`;}
+    h+=`<div class="cat"><h4>${n} <span>${items.length}</span></h4>${wb}<div class="grid3">${items.map(d=>`<div class="item${libSel===d.key?' on':''}" draggable="true" data-k="${d.key}" aria-label="${esc(d.name)}">${thumb(d)}<span>${esc(d.name)}</span></div>`).join('')}</div></div>`;}
   $('#libbody').innerHTML=h||`<div class="empty-note">ไม่พบอุปกรณ์ “${esc(q)}”</div>`;}
 $('#chips').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;libFilter=b.dataset.c;buildChips();buildLib();});
 $('#q').addEventListener('input',buildLib);
 let cascade=0;
-$('#libbody').addEventListener('click',e=>{const tb=e.target.closest('[data-tool]');if(tb){setTool(tb.dataset.tool);tip(LP[tb.dataset.tool].n+': ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว');return;}const it=e.target.closest('.item');if(!it)return;const c=viewCenter();cascade=(cascade+1)%6;addShapeAt(it.dataset.k,c.x+cascade*20-50,c.y+cascade*20-50);});
-$('#libbody').addEventListener('dragstart',e=>{const it=e.target.closest('.item');if(!it)return;e.dataTransfer.setData('text/x-physidraw',it.dataset.k);e.dataTransfer.setData('text/plain',DEF[it.dataset.k].name);e.dataTransfer.effectAllowed='copy';});
+$('#libbody').addEventListener('click',e=>{const tb=e.target.closest('[data-tool]');if(tb){setTool(tb.dataset.tool);tip(LP[tb.dataset.tool].n+': ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว');return;}const it=e.target.closest('.item');if(!it)return;markLib(it);const c=viewCenter();cascade=(cascade+1)%6;addShapeAt(it.dataset.k,c.x+cascade*20-50,c.y+cascade*20-50);});
+function markLib(it){libSel=it.dataset.k;document.querySelectorAll('#libbody .item.on').forEach(x=>x.classList.remove('on'));it.classList.add('on');}
+$('#libbody').addEventListener('dragstart',e=>{const it=e.target.closest('.item');if(!it)return;markLib(it);e.dataTransfer.setData('text/x-physidraw',it.dataset.k);e.dataTransfer.setData('text/plain',DEF[it.dataset.k].name);e.dataTransfer.effectAllowed='copy';});
 
 /* ---------- tool rail ---------- */
 function buildRail(){const t=(k,lab,title)=>`<button class="ib tl" data-tool="${k}" title="${title}">${IC(ICON[k],18)}<span>${lab}</span></button>`;
