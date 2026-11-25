@@ -1703,7 +1703,8 @@ function buildLib(){const q=$('#q').value.trim().toLowerCase();let h='';
     h+=`<div class="libtools"><button data-colall="1">ย่อทั้งหมด</button><button data-colall="0">ขยายทั้งหมด</button></div>`;
     h+=sec('_fav','★ รายการโปรด',libStore.fav)+sec('_rec','ใช้ล่าสุด',libStore.recent);
     if(!CATS.some(c=>catSubj(c[0])===libSubj))h+=`<div class="soon"><b>${libSubj==='bio'?'ชีววิทยา':'ดาราศาสตร์'} — กำลังพัฒนา</b><span>หมวดนี้จะเพิ่มในเฟส ${libSubj==='bio'?3:4} ระหว่างนี้ใช้หมวดทั่วไปด้านล่าง หรือค้นหาวัตถุจากทุกสาขาได้</span></div>`;}
-  for(const[c,n,en]of (q?CATS:subjCats())){if(libFilter!=='all'&&libFilter!==c)continue;const items=LIB.filter(d=>d.cat===c&&(!q||(d.name+' '+d.en+' '+d.key+' '+d.al).toLowerCase().includes(q)));if(!items.length)continue;
+  const seenQ=new Set();
+  for(const[c,n,en]of (q?CATS:subjCats())){if(libFilter!=='all'&&libFilter!==c)continue;const items=LIB.filter(d=>!d.legacy&&(d.cat===c||(d.also&&d.also.includes(c)))&&(!q||(!seenQ.has(d.key)&&(d.name+' '+d.en+' '+d.key+' '+d.al).toLowerCase().includes(q))));if(q)items.forEach(d=>seenQ.add(d.key));if(!items.length)continue;
     const wb=c==='elec'?`<div class="wirebar"><button data-tool="wire_s" title="ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว (W)">${IC(ICON.wire_s,16)}สายไฟตรง</button><button data-tool="wire" title="สายไฟหักมุมฉาก (E)">${IC(ICON.wire,16)}สายหักมุม</button></div>`:'';
     const shut=!q&&libFilter==='all'&&col[c];h+=`<div class="cat">${head(c,n,items.length)}${shut?'':wb+`<div class="grid3">${items.map(card).join('')}</div>`}</div>`;}
   $('#libbody').innerHTML=h||`<div class="empty-note">ไม่พบอุปกรณ์ “${esc(q)}”</div>`;}
@@ -1871,5 +1872,9 @@ document.addEventListener('DOMContentLoaded',init);
 <script src="js/biology-body.js"></script>
 <script src="js/biology-tools.js"></script>
 <script src="js/biology-templates.js"></script>
+<script src="js/astronomy.js"></script>
+<script src="js/astronomy-tools.js"></script>
+<script src="js/astronomy-templates.js"></script>
+<script src="js/taxonomy.js"></script>
 </body>
 </html>
