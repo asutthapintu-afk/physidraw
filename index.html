@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>PhysiDraw — วาดไดอะแกรมฟิสิกส์</title>
 <meta name="description" content="PhysiDraw — เว็บวาดไดอะแกรมฟิสิกส์ วงจรไฟฟ้า ทัศนศาสตร์ กลศาสตร์ และเครื่องมือวิทยาศาสตร์ ส่งออก PNG/SVG">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.2' fill='none' stroke='white' stroke-width='1.6'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.2' fill='none' stroke='white' stroke-width='1.6' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.2' fill='none' stroke='white' stroke-width='1.6' transform='rotate(120 16 16)'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%23fde047'/%3E%3C/svg%3E">
@@ -195,6 +195,91 @@ footer .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:in
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media (max-width:1100px){main{grid-template-columns:230px 1fr 250px}.docname{width:140px}.brand small{display:none}}
 @media (max-width:860px){.hide-sm{display:none!important}}
+/* ---------- side panel tabs & layers ---------- */
+#side{background:var(--panel);min-height:0;display:flex;flex-direction:column;border-left:1px solid var(--line)}
+#props{border-left:none!important;flex:1;min-height:0}
+[hidden]{display:none!important}
+.ptabs{display:flex;gap:4px;padding:8px 10px 0;border-bottom:1px solid var(--line);flex:none;align-items:flex-end}
+.ptabs [data-pt]{border:none;background:none;padding:7px 10px 8px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;font-size:12.5px}
+.ptabs [data-pt].on{color:var(--acc);border-bottom-color:var(--acc)}
+.ptabs [data-pt] span{font-weight:500;color:var(--faint);font-size:11px}
+.ptabs .ib{margin-left:auto;align-self:center}
+#layers{overflow:auto;flex:1;min-height:0;padding:6px 6px 20px}
+.lhint{color:var(--muted);font-size:11.5px;padding:6px 8px 8px;line-height:1.5}
+.lr{display:flex;align-items:center;gap:4px;height:34px;border-radius:8px;padding:0 4px;cursor:pointer;user-select:none;position:relative;border:1px solid transparent}
+.lr:hover{background:#f6f7fb}
+.lr.on{background:var(--acc2);border-color:var(--acc3)}
+.lr.off .ln,.lr.off .lic{opacity:.4}
+.lr .hd{width:18px;height:28px;display:grid;place-items:center;color:var(--faint);cursor:grab;touch-action:none;flex:none;font-size:12px;letter-spacing:-2px}
+.lr .li{width:26px;height:26px;border:none;background:none;border-radius:6px;display:grid;place-items:center;color:var(--faint);padding:0;flex:none}
+.lr .li:hover{background:#e9ecf3;color:var(--ink2)}
+.lr .li.act{color:var(--ink2)}
+.lr .lic{width:26px;height:22px;flex:none;display:grid;place-items:center;color:var(--ink2)}
+.lr .lic svg{width:24px;height:22px}
+.lr .ln{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px}
+.lr .ln input{width:100%;height:24px;border:1px solid var(--acc);border-radius:5px;padding:0 5px;font-size:12.5px}
+.lr.grp .ln{font-weight:600}
+.lr.mem{padding-left:22px}
+.lr.mem::before{content:'';position:absolute;left:13px;top:0;bottom:0;border-left:1.5px solid var(--line2)}
+.lr.drop-b{box-shadow:inset 0 2px 0 var(--acc)}
+.lr.drop-a{box-shadow:inset 0 -2px 0 var(--acc)}
+.lr.dragging{opacity:.45}
+/* ---------- library groups ---------- */
+.libtools{display:flex;justify-content:flex-end;gap:8px;padding:6px 2px 0}
+.libtools button{border:none;background:none;color:var(--acc);font-size:11.5px;font-weight:600;padding:2px 4px}
+.cath{display:flex;align-items:center;gap:6px;width:100%;border:none;background:none;padding:6px 2px;margin:2px 0;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left;border-radius:6px}
+.cath:hover{color:var(--ink2);background:#f6f7fb}
+.cath svg{transition:transform .15s;flex:none}
+.cath.col svg{transform:rotate(-90deg)}
+.cath em{font-style:normal;margin-left:auto;color:var(--faint);font-weight:500;background:#f1f3f7;border-radius:99px;padding:0 7px}
+.chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none}
+/* ---------- mobile ---------- */
+.show-sm{display:none!important}
+#mnav{display:none}
+.selbar{display:none}
+.grip{display:none}
+@media (max-width:760px){
+  #app{grid-template-rows:50px 1fr 60px;height:100vh;height:100dvh}
+  header{gap:4px;padding:0 6px}
+  .brand div,header .sep,header .grow{display:none}
+  .docname{flex:1;width:auto;font-size:15px}
+  .btn.pri{padding:0 10px}
+  .show-sm{display:inline-grid!important}
+  footer{display:none}
+  main{grid-template-columns:1fr;position:relative}
+  #lib,#side{position:fixed;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom));height:min(66dvh,600px);z-index:40;border:none;border-top:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:0 -12px 40px rgba(15,23,42,.18);transform:translateY(calc(100% + 80px));transition:transform .24s cubic-bezier(.2,.8,.2,1);overflow:hidden}
+  #lib.open,#side.open{transform:none}
+  .grip{display:flex!important;justify-content:center;padding:8px 0 2px;flex:none;cursor:pointer}
+  .grip span{width:42px;height:5px;border-radius:9px;background:var(--line2)}
+  .libhead{padding-top:4px}
+  .grid3{grid-template-columns:repeat(4,1fr);gap:7px}
+  .item svg{height:48px}
+  .rail{left:8px;right:8px;top:8px;flex-direction:row;max-height:none;overflow-x:auto;overflow-y:hidden;padding:4px;border-radius:12px}
+  .rail .rg{display:none}
+  .rail .ib.tl{width:50px;height:46px;flex:none}
+  .zoomdock{bottom:10px;right:10px}
+  .tipbar{bottom:66px;white-space:normal;max-width:88%;text-align:center}
+  #mnav{display:flex;position:fixed;left:0;right:0;bottom:0;height:calc(60px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--panel);border-top:1px solid var(--line);z-index:45}
+  #mnav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:none;color:var(--muted);font-size:10.5px;font-weight:600}
+  #mnav button.on{color:var(--acc)}
+  #mnav button.on svg{background:var(--acc2);border-radius:8px}
+  .selbar{position:absolute;left:50%;bottom:62px;transform:translateX(-50%);display:none;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:4px;box-shadow:0 8px 26px rgba(15,23,42,.16);z-index:5;max-width:calc(100% - 16px);overflow-x:auto}
+  .selbar.show{display:flex}
+  .selbar button{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;border:none;background:none;border-radius:10px;padding:5px 8px;font-size:10px;color:var(--ink2);min-width:50px}
+  .selbar button:active{background:var(--acc2)}
+  .selbar .dz{color:var(--danger)}
+  input,select,textarea,.f input,.f select{font-size:16px}
+  .ph{padding:10px 14px 8px}
+  .card{max-height:calc(100dvh - 24px)}
+  .modal{padding:10px}
+  .exgrid{grid-template-columns:1fr}
+  .tgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .menu button{padding:11px 12px}
+}
+@media (max-width:860px){#btnMore{display:inline-grid!important}}
+@media (pointer:coarse){.lr{height:42px}.lr .li{width:32px;height:32px}.lr .hd{width:26px}}
 </style>
 </head>
 <body>
@@ -213,15 +298,17 @@ footer .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:in
   <button class="btn ghost hide-sm" id="btnTpl"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>แม่แบบ</button>
   <button class="btn ghost hide-sm" id="btnImg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>แทรกรูป</button>
   <button class="btn ghost hide-sm" id="btnOpen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-8l-2-3H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1z"/></svg>เปิดไฟล์</button>
-  <button class="btn" id="btnNew">ใหม่</button>
+  <button class="btn hide-sm" id="btnNew">ใหม่</button>
   <div class="stylesw hide-sm" id="styleSw" title="รูปแบบการแสดงผล"><button data-st="color" class="on">สี</button><button data-st="mono">ขาวดำ</button></div>
   <button class="btn pri" id="btnExport"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>ส่งออก</button>
+  <button class="ib show-sm" id="btnMore" title="เมนูเพิ่มเติม"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
   <input type="file" id="fileJson" accept=".json,application/json" hidden>
   <input type="file" id="fileImg" accept="image/*" hidden>
 </header>
 
 <main>
   <aside id="lib">
+    <div class="grip show-sm" data-close-sheet title="ปิด"><span></span></div>
     <div class="libhead">
       <div class="search">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -259,9 +346,14 @@ footer .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:in
       <button class="ib" id="zFit" title="พอดีหน้าจอ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     </div>
     <div class="tipbar" id="tipbar"></div>
+    <div class="selbar" id="selbar"></div>
   </section>
 
-  <aside id="props"></aside>
+  <aside id="side">
+    <div class="ptabs" id="ptabs"><button data-pt="props" class="on">คุณสมบัติ</button><button data-pt="layers">เลเยอร์ <span id="layCount"></span></button><button class="ib show-sm" data-close-sheet title="ปิด"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div id="props"></div>
+    <div id="layers" hidden></div>
+  </aside>
 </main>
 
 <footer>
@@ -271,6 +363,13 @@ footer .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:in
   <span id="stCount"></span>
   <span id="stPos"></span>
 </footer>
+<nav id="mnav">
+  <button data-sheet="lib"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg><span>คลังภาพ</span></button>
+  <button data-multi><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="11" height="11" rx="2"/><rect x="10" y="10" width="11" height="11" rx="2" stroke-dasharray="3 2"/></svg><span>เลือกหลายชิ้น</span></button>
+  <button data-sheet="props"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span>คุณสมบัติ</span></button>
+  <button data-sheet="layers"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3 2 8l10 5 10-5z"/><path d="m2 13 10 5 10-5"/></svg><span>เลเยอร์</span></button>
+  <button data-mtpl><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span>แม่แบบ</span></button>
+</nav>
 </div>
 
 <!-- Templates modal -->
@@ -963,7 +1062,7 @@ function lineSVG(o,exp){if(o.kind==='measure')return measureSVG(o,exp);if(LINEKI
     const m=o.ls==='math';s+=`<g transform="translate(${R2(g.lab[0]+nx*k)} ${R2(g.lab[1]+ny*k)})">${textLines(o.label,o.lsz||18,o.lc||o.stroke,{serif:m,italic:m})}</g>`;}
   return s;}
 function textSVG(o,exp){const b=textBox(o);return `<g transform="translate(${R2(o.x)} ${R2(o.y)}) rotate(${R2(o.rot||0)})">${exp?'':`<rect x="${R2(b.x-4)}" y="${R2(b.y-2)}" width="${R2(b.w+8)}" height="${R2(b.h+4)}" fill="transparent"/>`}<g class="tb">${textLines(o.text,o.size,o.color,{serif:o.font==='serif',bold:o.bold,italic:o.italic,align:o.align})}</g></g>`;}
-function objSVG(o,exp){const op=o.op!==undefined&&o.op<1?` opacity="${o.op}"`:'';let inner='';
+function objSVG(o,exp){if(o.hide)return '';const op=o.op!==undefined&&o.op<1?` opacity="${o.op}"`:'';let inner='';
   if(o.type==='shape')inner=shapeSVG(o,exp)+boxLabel(o);else if(o.type==='image')inner=imageSVG(o)+boxLabel(o);else if(o.type==='line')inner=lineSVG(o,exp);else if(o.type==='text')inner=textSVG(o,exp);else if(o.type==='graph')inner=graphSVG(o)+boxLabel(o);else if(o.type==='angle')inner=angleSVG(o,exp);else if(TYPES[o.type]){try{inner=TYPES[o.type].svg(o,exp)+(TYPES[o.type].box&&!TYPES[o.type].noLabel?boxLabel(o):'');}catch(e){inner='';}}
   return exp?`<g${op}>${inner}</g>`:`<g data-id="${o.id}"${op}>${inner}</g>`;}
 
@@ -1061,21 +1160,24 @@ function render(){
   const gr=$('#gridRect');gr.setAttribute('width',doc.w);gr.setAttribute('height',doc.h);gr.style.display=ui.grid?'':'none';
   renderOverlay();
   $('#stCount').textContent=`วัตถุ ${doc.objects.length} ชิ้น`+(sel.length?` · เลือก ${sel.length}`:'');
+  if(!drag){renderLayers();updSelbar();}
 }
 function applyView(){vp.setAttribute('transform',`translate(${R2(view.x)} ${R2(view.y)}) scale(${view.z})`);$('#zTxt').textContent=Math.round(view.z*100)+'%';renderOverlay();}
 
+const COARSE=()=>matchMedia('(pointer:coarse)').matches;
+let multiTap=false;
 function renderOverlay(){
-  const z=view.z,hsz=8/z,sw=1.2/z;let s='';const objs=selObjs();const ACC='#4f46e5';
+  const z=view.z,CO=COARSE(),hsz=(CO?15:8)/z,sw=1.2/z;let s='';const objs=selObjs();const ACC='#4f46e5';const quiet=objs.length>1&&isOneGroup();
   const showAnchors=LP[tool]||tool==='angle'||(drag&&['p1','p2','create','av','a1','a2','acreate'].includes(drag.mode));
   if(showAnchors){for(const o of doc.objects){if(!isBox(o))continue;for(const a of['l','r','t','b','c']){const[x,y]=anchorPos(o,a);const on=hoverAnchor&&hoverAnchor.id===o.id&&hoverAnchor.a===a;
     s+=`<circle cx="${R2(x)}" cy="${R2(y)}" r="${R2((on?5:3)/z)}" fill="${on?ACC:'#fff'}" stroke="${ACC}" stroke-width="${R2(sw)}" opacity="${a==='c'&&!on?.5:1}" pointer-events="none"/>`;}}}
   const single=objs.length===1;
-  for(const o of objs){
+  for(const o of objs){if(quiet)continue;
     if(isBox(o)){const cx=o.x+o.w/2,cy=o.y+o.h/2;
       s+=`<g transform="translate(${R2(cx)} ${R2(cy)}) rotate(${R2(o.rot||0)})"><rect x="${R2(-o.w/2)}" y="${R2(-o.h/2)}" width="${R2(o.w)}" height="${R2(o.h)}" fill="none" stroke="${ACC}" stroke-width="${R2(sw)}" pointer-events="none"/>`;
       if(single){const ry=-o.h/2-26/z;s+=`<path d="M0,${R2(-o.h/2)}V${R2(ry)}" stroke="${ACC}" stroke-width="${R2(sw)}" pointer-events="none"/>`;
         for(const sx of[-1,0,1])for(const sy of[-1,0,1]){if(!sx&&!sy)continue;s+=`<rect class="hdl" data-h="r:${sx}:${sy}" x="${R2(sx*o.w/2-hsz/2)}" y="${R2(sy*o.h/2-hsz/2)}" width="${R2(hsz)}" height="${R2(hsz)}" rx="${R2(1.5/z)}" stroke-width="${R2(sw)}" style="cursor:${cursorFor(sx,sy,o.rot||0)}"/>`;}
-        s+=`<circle class="hdl rot" data-h="rot" cx="0" cy="${R2(ry)}" r="${R2(5.5/z)}" stroke-width="${R2(sw)}"/>`;}
+        s+=`<circle class="hdl rot" data-h="rot" cx="0" cy="${R2(ry)}" r="${R2((CO?11:5.5)/z)}" stroke-width="${R2(sw)}"/>`;}
       s+='</g>';}
     else if(o.type==='text'){const b=textBox(o);s+=`<g transform="translate(${R2(o.x)} ${R2(o.y)}) rotate(${R2(o.rot||0)})"><rect x="${R2(b.x-4)}" y="${R2(b.y-2)}" width="${R2(b.w+8)}" height="${R2(b.h+4)}" fill="none" stroke="${ACC}" stroke-width="${R2(sw)}" pointer-events="none"/>`;
       if(single){const ry=b.y-2-24/z;s+=`<path d="M${R2(b.x+b.w/2)},${R2(b.y-2)}V${R2(ry)}" stroke="${ACC}" stroke-width="${R2(sw)}" pointer-events="none"/><circle class="hdl rot" data-h="rot" cx="${R2(b.x+b.w/2)}" cy="${R2(ry)}" r="${R2(5.5/z)}" stroke-width="${R2(sw)}"/><rect class="hdl" data-h="ts" x="${R2(b.x+b.w+4-hsz/2)}" y="${R2(b.y+b.h+2-hsz/2)}" width="${R2(hsz)}" height="${R2(hsz)}" stroke-width="${R2(sw)}" style="cursor:nwse-resize"/>`;}
@@ -1086,7 +1188,12 @@ function renderOverlay(){
       if(single){if(o.kind==='curve'){s+=`<path d="M${R2(o.x1)},${R2(o.y1)}L${R2(o.cx)},${R2(o.cy)}L${R2(o.x2)},${R2(o.y2)}" fill="none" stroke="${ACC}" stroke-width="${R2(sw)}" stroke-dasharray="${R2(3/z)} ${R2(3/z)}" pointer-events="none"/><rect class="hdl" data-h="c" x="${R2(o.cx-hsz/2)}" y="${R2(o.cy-hsz/2)}" width="${R2(hsz)}" height="${R2(hsz)}" transform="rotate(45 ${R2(o.cx)} ${R2(o.cy)})" stroke-width="${R2(sw)}" style="cursor:move"/>`;}
         for(const[k,x,y,a]of[['p1',o.x1,o.y1,o.a1],['p2',o.x2,o.y2,o.a2]])s+=`<circle class="hdl pt" data-h="${k}" cx="${R2(x)}" cy="${R2(y)}" r="${R2((a?6:5)/z)}" stroke-width="${R2(1.5/z)}" style="cursor:move;${a?'fill:#16a34a':''}"/>`;}}
   }
-  if(objs.length>1){const b=unionBox(objs);s+=`<rect x="${R2(b.x-4/z)}" y="${R2(b.y-4/z)}" width="${R2(b.X-b.x+8/z)}" height="${R2(b.Y-b.y+8/z)}" fill="none" stroke="${ACC}" stroke-width="${R2(sw)}" stroke-dasharray="${R2(4/z)} ${R2(3/z)}" pointer-events="none"/>`;}
+  if(objs.length>1){const b=unionBox(objs),p=5/z,x0=b.x-p,y0=b.y-p,x1=b.X+p,y1=b.Y+p,cx=(x0+x1)/2,ry=y0-(CO?34:26)/z;
+    s+=`<rect x="${R2(x0)}" y="${R2(y0)}" width="${R2(x1-x0)}" height="${R2(y1-y0)}" fill="none" stroke="${ACC}" stroke-width="${R2(sw*(quiet?1.4:1))}" ${quiet?'':`stroke-dasharray="${R2(4/z)} ${R2(3/z)}"`} pointer-events="none"/>`;
+    if(!drag||!['move','marq'].includes(drag.mode)){s+=`<path d="M${R2(cx)},${R2(y0)}V${R2(ry)}" stroke="${ACC}" stroke-width="${R2(sw)}" pointer-events="none"/><circle class="hdl rot" data-h="grot" cx="${R2(cx)}" cy="${R2(ry)}" r="${R2((CO?11:5.5)/z)}" stroke-width="${R2(sw)}"/>`;
+      for(const[sx,sy,X,Y]of[[-1,-1,x0,y0],[1,-1,x1,y0],[-1,1,x0,y1],[1,1,x1,y1]])s+=`<rect class="hdl" data-h="gs:${sx}:${sy}" x="${R2(X-hsz/2)}" y="${R2(Y-hsz/2)}" width="${R2(hsz)}" height="${R2(hsz)}" rx="${R2(1.5/z)}" stroke-width="${R2(sw)}" style="cursor:${sx*sy>0?'nwse-resize':'nesw-resize'}"/>`;}
+    if(quiet)s+=`<text x="${R2(x0)}" y="${R2(y0-6/z)}" font-size="${R2(11/z)}" fill="${ACC}" font-family="${SANS}" font-weight="600" pointer-events="none">${esc(groupName(objs[0].g))}</text>`;}
+  if(isoGroup){const m=groupMembers(isoGroup);if(m.length){const b=unionBox(m);s+=`<rect x="${R2(b.x-8/z)}" y="${R2(b.y-8/z)}" width="${R2(b.X-b.x+16/z)}" height="${R2(b.Y-b.y+16/z)}" fill="none" stroke="#a5b4fc" stroke-width="${R2(sw)}" stroke-dasharray="${R2(2/z)} ${R2(3/z)}" pointer-events="none"/>`;}}
   overlay.innerHTML=s;
 }
 function cursorFor(sx,sy,r){const ang=((Math.atan2(sy,sx)/DEG+r)%180+180)%180;const c=['ew-resize','nwse-resize','ns-resize','nesw-resize'];return c[Math.round(ang/45)%4];}
@@ -1095,7 +1202,7 @@ function cursorFor(sx,sy,r){const ang=((Math.atan2(sy,sx)/DEG+r)%180+180)%180;co
 let saveT=null;
 function commit(){const s=JSON.stringify(doc);if(hist[hi]===s)return;hist=hist.slice(0,hi+1);hist.push(s);if(hist.length>150)hist.shift();hi=hist.length-1;updUndo();queueSave();}
 function updUndo(){$('#undo').disabled=hi<=0;$('#redo').disabled=hi>=hist.length-1;}
-function restore(s){doc=JSON.parse(s);sel=sel.filter(id=>byId(id));$('#docname').value=doc.name||'';syncStyleSw();render();renderPanel();queueSave();}
+function restore(s){doc=JSON.parse(s);sel=sel.filter(id=>byId(id));if(isoGroup&&!groupMembers(isoGroup).length)isoGroup=null;$('#docname').value=doc.name||'';syncStyleSw();render();renderPanel();queueSave();}
 function undo(){if(hi>0){hi--;restore(hist[hi]);updUndo();}}
 function redo(){if(hi<hist.length-1){hi++;restore(hist[hi]);updUndo();}}
 function queueSave(){clearTimeout(saveT);$('#saveState').textContent='กำลังบันทึก…';saveT=setTimeout(()=>{try{localStorage.setItem('physidraw.v1',JSON.stringify({doc,ui}));$('#saveState').textContent='บันทึกอัตโนมัติแล้ว';}catch(e){$('#saveState').textContent='บันทึกในเบราว์เซอร์ไม่ได้ — ใช้ “ส่งออก → .json” เพื่อเก็บงาน';}},400);}
@@ -1128,10 +1235,10 @@ function moveObj(o,dx,dy){if(TYPES[o.type]&&TYPES[o.type].move){TYPES[o.type].mo
 function dupSel(){const objs=selObjs();if(!objs.length)return;const map={};const cs=objs.map(o=>{const c=cloneObj(o,20,20);map[o.id]=c.id;return c;});
   // keep connections among duplicated set
   objs.forEach((o,i)=>{if(o.type==='line'){for(const k of['a1','a2'])if(o[k]&&map[o[k].id])cs[i][k]={id:map[o[k].id],a:o[k].a};}});
-  doc.objects.push(...cs);sel=cs.map(c=>c.id);render();renderPanel();commit();}
+  remapGroups(cs);doc.objects.push(...cs);sel=cs.map(c=>c.id);render();renderPanel();commit();}
 function copySel(){clip=JSON.parse(JSON.stringify(selObjs()));if(clip.length)tip(`คัดลอก ${clip.length} ชิ้น`);}
 function pasteClip(){if(!clip.length)return;const map={};const cs=clip.map(o=>{const c=cloneObj(o,24,24);map[o.id]=c.id;return c;});clip.forEach((o,i)=>{if(o.type==='line')for(const k of['a1','a2'])if(o[k]&&map[o[k].id])cs[i][k]={id:map[o[k].id],a:o[k].a};});
-  clip=cs.map(c=>JSON.parse(JSON.stringify(c)));doc.objects.push(...cs);sel=cs.map(c=>c.id);render();renderPanel();commit();}
+  remapGroups(cs);clip=cs.map(c=>JSON.parse(JSON.stringify(c)));doc.objects.push(...cs);sel=cs.map(c=>c.id);render();renderPanel();commit();}
 function order(dir){const S=new Set(sel);if(!S.size)return;let a=doc.objects;
   if(dir==='front')a=[...a.filter(o=>!S.has(o.id)),...a.filter(o=>S.has(o.id))];
   else if(dir==='back')a=[...a.filter(o=>S.has(o.id)),...a.filter(o=>!S.has(o.id))];
@@ -1145,26 +1252,60 @@ function align(kind){const objs=selObjs();if(objs.length<2)return;const U=unionB
   else bs.forEach(({o,b})=>{let dx=0,dy=0;if(kind==='l')dx=U.x-b.x;if(kind==='r')dx=U.X-b.X;if(kind==='c')dx=(U.x+U.X)/2-(b.x+b.X)/2;if(kind==='t')dy=U.y-b.y;if(kind==='b')dy=U.Y-b.Y;if(kind==='m')dy=(U.y+U.Y)/2-(b.y+b.Y)/2;moveObj(o,dx,dy);detach(o);});
   render();renderPanel();commit();}
 function detach(o){if(o.type!=='line')return;const S=new Set(sel);for(const k of['a1','a2'])if(o[k]&&!S.has(o[k].id))delete o[k];}
+/* ---------- groups: members share o.g; the group moves, scales, rotates and reorders as one ---------- */
+let isoGroup=null;
+const gidNew=()=>'g'+Math.random().toString(36).slice(2,8);
+const groupMembers=g=>doc.objects.filter(o=>o.g===g);
+function expandIds(ids){const out=new Set(ids);ids.forEach(id=>{const o=byId(id);if(o&&o.g&&o.g!==isoGroup)groupMembers(o.g).forEach(m=>out.add(m.id));});return doc.objects.filter(o=>out.has(o.id)).map(o=>o.id);}
+function selGroups(){return [...new Set(selObjs().map(o=>o.g).filter(Boolean))];}
+function isOneGroup(){const objs=selObjs();return objs.length>1&&!!objs[0].g&&objs.every(o=>o.g===objs[0].g)&&groupMembers(objs[0].g).length===objs.length;}
+function groupName(g){const n=doc.gnames&&doc.gnames[g];if(n)return n;const gs=[...new Set(doc.objects.map(o=>o.g).filter(Boolean))];return 'กลุ่ม '+(gs.indexOf(g)+1);}
+function groupSel(){const objs=selObjs();if(objs.length<2){tip('เลือกอย่างน้อย 2 ชิ้นเพื่อจัดกลุ่ม');return;}const g=gidNew(),S=new Set(sel);
+  const top=Math.max(...doc.objects.map((o,i)=>S.has(o.id)?i:-1));const before=doc.objects.slice(0,top+1).filter(o=>!S.has(o.id)).length;
+  const mem=doc.objects.filter(o=>S.has(o.id)),rest=doc.objects.filter(o=>!S.has(o.id));mem.forEach(o=>o.g=g);rest.splice(before,0,...mem);doc.objects=rest;
+  isoGroup=null;render();renderPanel();commit();tip(`จัดกลุ่ม ${mem.length} ชิ้นแล้ว · ดับเบิลคลิกเพื่อแก้ไขทีละชิ้น`);}
+function ungroupSel(){const gs=selGroups();if(!gs.length)return;doc.objects.forEach(o=>{if(gs.includes(o.g))delete o.g;});if(doc.gnames)gs.forEach(g=>delete doc.gnames[g]);isoGroup=null;render();renderPanel();commit();tip('ยกเลิกกลุ่มแล้ว');}
+function remapGroups(cs){const m={};cs.forEach(c=>{if(c.g){m[c.g]=m[c.g]||gidNew();c.g=m[c.g];}});}
+function scaleObj(o,or,fx,fy,k){const m=(x,y)=>[fx+(x-fx)*k,fy+(y-fy)*k];
+  if(isBox(o)){const[cx,cy]=m(or.x+or.w/2,or.y+or.h/2);o.w=or.w*k;o.h=or.h*k;o.x=cx-o.w/2;o.y=cy-o.h/2;if(or.lsz)o.lsz=R2(or.lsz*k);if(TYPES[o.type]&&TYPES[o.type].afterResize)TYPES[o.type].afterResize(o,or);}
+  else if(o.type==='text'){[o.x,o.y]=m(or.x,or.y);o.size=R2(clamp(or.size*k,4,400));}
+  else if(o.type==='angle'){[o.vx,o.vy]=m(or.vx,or.vy);[o.x1,o.y1]=m(or.x1,or.y1);[o.x2,o.y2]=m(or.x2,or.y2);if(or.r)o.r=R2(or.r*k);if(or.lsz)o.lsz=R2(or.lsz*k);}
+  else{[o.x1,o.y1]=m(or.x1,or.y1);[o.x2,o.y2]=m(or.x2,or.y2);if(or.cx!==undefined)[o.cx,o.cy]=m(or.cx,or.cy);if(or.lsz)o.lsz=R2(or.lsz*k);}}
+function rotObj(o,cx,cy,d){const a=d*DEG,r=(x,y)=>{const[u,v]=rot(x-cx,y-cy,a);return[cx+u,cy+v];};const nr=v=>R2((((v+d)%360)+540)%360-180);
+  if(isBox(o)){const[nx,ny]=r(o.x+o.w/2,o.y+o.h/2);o.x=nx-o.w/2;o.y=ny-o.h/2;o.rot=nr(o.rot||0);}
+  else if(o.type==='text'){[o.x,o.y]=r(o.x,o.y);o.rot=nr(o.rot||0);}
+  else if(o.type==='angle'){[o.vx,o.vy]=r(o.vx,o.vy);[o.x1,o.y1]=r(o.x1,o.y1);[o.x2,o.y2]=r(o.x2,o.y2);}
+  else{[o.x1,o.y1]=r(o.x1,o.y1);[o.x2,o.y2]=r(o.x2,o.y2);if(o.cx!==undefined)[o.cx,o.cy]=r(o.cx,o.cy);}}
+function flipObj(o,cx,cy,h){const f=(x,y)=>h?[2*cx-x,y]:[x,2*cy-y];
+  if(isBox(o)){const[nx,ny]=f(o.x+o.w/2,o.y+o.h/2);o.x=nx-o.w/2;o.y=ny-o.h/2;if(o.rot)o.rot=-o.rot;if(o.type==='shape'||o.type==='image'){if(h)o.fh=!o.fh;else o.fv=!o.fv;}}
+  else if(o.type==='text'){[o.x,o.y]=f(o.x,o.y);if(o.rot)o.rot=-o.rot;}
+  else if(o.type==='angle'){[o.vx,o.vy]=f(o.vx,o.vy);[o.x1,o.y1]=f(o.x1,o.y1);[o.x2,o.y2]=f(o.x2,o.y2);}
+  else{[o.x1,o.y1]=f(o.x1,o.y1);[o.x2,o.y2]=f(o.x2,o.y2);if(o.cx!==undefined)[o.cx,o.cy]=f(o.cx,o.cy);}}
+function xformSel(kind,v){const objs=selObjs();if(!objs.length)return;const b=unionBox(objs),cx=(b.x+b.X)/2,cy=(b.y+b.Y)/2;
+  objs.forEach(o=>{const or=JSON.parse(JSON.stringify(o));if(kind==='s')scaleObj(o,or,cx,cy,v);else if(kind==='r')rotObj(o,cx,cy,v);else flipObj(o,cx,cy,kind==='gfh');});render();renderPanel();commit();}
+
 
 /* ---------- pointer interaction ---------- */
 stage.addEventListener('pointerdown',e=>{
   hideMenu();if(e.button===2)return;
-  const P=toWorld(e);stage.setPointerCapture(e.pointerId);
+  const P=toWorld(e);try{stage.setPointerCapture(e.pointerId);}catch(_){}
   const h=e.target.closest&&e.target.closest('[data-h]');
   if(e.button===1||tool==='hand'||spaceDown){drag={mode:'pan',sx:e.clientX,sy:e.clientY,vx:view.x,vy:view.y};stage.classList.add('panning');return;}
+  if(h&&sel.length>1&&(h.dataset.h.startsWith('gs:')||h.dataset.h==='grot')){const b=unionBox(selObjs());drag={mode:h.dataset.h==='grot'?'grot':'gscale',start:P,c:{x:(b.x+b.X)/2,y:(b.y+b.Y)/2},origs:selObjs().map(o=>JSON.parse(JSON.stringify(o))),moved:false};
+    if(drag.mode==='gscale'){const[,sx,sy]=h.dataset.h.split(':');drag.F={x:+sx>0?b.x:b.X,y:+sy>0?b.y:b.Y};drag.C0={x:+sx>0?b.X:b.x,y:+sy>0?b.Y:b.y};}return;}
   if(h&&sel.length===1){const o=byId(sel[0]);drag={mode:h.dataset.h.startsWith('r:')?'resize':h.dataset.h,h:h.dataset.h,start:P,orig:JSON.parse(JSON.stringify(o)),moved:false};
     if(drag.mode==='resize'){const[,sx,sy]=h.dataset.h.split(':');drag.sx=+sx;drag.sy=+sy;}return;}
   if(LP[tool]){const an=findAnchor(P);const sp=an?{x:an.x,y:an.y}:{x:snapV(P.x),y:snapV(P.y)};const l=mkLine(tool,sp.x,sp.y,sp.x,sp.y);if(tool==='arrow')l.label='';if(an)l.a1={id:an.id,a:an.a};
     doc.objects.push(l);sel=[l.id];drag={mode:'create',orig:JSON.parse(JSON.stringify(l)),start:P,moved:false};render();return;}
   if(tool==='angle'){const sp=snapPt(P);const a=mkAngle(sp.x,sp.y);doc.objects.push(a);sel=[a.id];drag={mode:'acreate',start:P,moved:false};render();return;}
   if(tool==='text'){const t=mkText('ข้อความ',snapV(P.x),snapV(P.y));doc.objects.push(t);sel=[t.id];render();renderPanel();commit();setTool('select');focusPanel('text',true);return;}
-  const g=e.target.closest&&e.target.closest('#content g[data-id]');
-  if(g){const id=g.dataset.id;
-    if(e.shiftKey||e.metaKey||e.ctrlKey){sel=sel.includes(id)?sel.filter(x=>x!==id):[...sel,id];render();renderPanel();if(!sel.includes(id))return;}
-    else if(!sel.includes(id)){sel=[id];render();renderPanel();}
+  const g0=e.target.closest&&e.target.closest('#content g[data-id]');const g=g0&&!(byId(g0.dataset.id)||{}).lock?g0:null;
+  if(g){const id=g.dataset.id;const ob=byId(id);if(isoGroup&&ob.g!==isoGroup)isoGroup=null;const grp=expandIds([id]);
+    if(e.shiftKey||e.metaKey||e.ctrlKey||multiTap){sel=sel.includes(id)?sel.filter(x=>!grp.includes(x)):[...sel,...grp.filter(x=>!sel.includes(x))];render();renderPanel();if(!sel.includes(id))return;}
+    else if(!sel.includes(id)){sel=grp;render();renderPanel();}
     if(e.altKey){dupSel();}
     drag={mode:'move',start:P,origs:selObjs().map(o=>JSON.parse(JSON.stringify(o))),moved:false};return;}
-  if(!(e.shiftKey||e.metaKey))sel=[];drag={mode:'marq',start:P,keep:[...sel]};render();renderPanel();
+  if(!(e.shiftKey||e.metaKey||multiTap)){sel=[];isoGroup=null;}drag={mode:'marq',start:P,keep:[...sel]};render();renderPanel();
 });
 stage.addEventListener('pointermove',e=>{
   const P=toWorld(e);$('#stPos').textContent=`x ${Math.round(P.x)} · y ${Math.round(P.y)}`;
@@ -1174,7 +1315,7 @@ stage.addEventListener('pointermove',e=>{
   case'pan':view.x=drag.vx+e.clientX-drag.sx;view.y=drag.vy+e.clientY-drag.sy;applyView();return;
   case'marq':{const m=$('#marq');const r=stage.getBoundingClientRect();const a=drag.start;const x=Math.min(a.x,P.x),y=Math.min(a.y,P.y),w=Math.abs(P.x-a.x),h=Math.abs(P.y-a.y);
     m.setAttribute('display','');m.setAttribute('x',x*view.z+view.x);m.setAttribute('y',y*view.z+view.y);m.setAttribute('width',w*view.z);m.setAttribute('height',h*view.z);
-    const hit=doc.objects.filter(o=>{const b=aabb(o);return b.X>=x&&b.x<=x+w&&b.Y>=y&&b.y<=y+h;}).map(o=>o.id);sel=[...new Set([...drag.keep,...hit])];renderOverlay();return;}
+    const hit=doc.objects.filter(o=>{if(o.lock||o.hide)return false;const b=aabb(o);return b.X>=x&&b.x<=x+w&&b.Y>=y&&b.y<=y+h;}).map(o=>o.id);sel=expandIds([...new Set([...drag.keep,...hit])]);renderOverlay();return;}
   case'move':{const dx0=P.x-drag.start.x,dy0=P.y-drag.start.y;const o0=drag.origs[0];let rx,ry;
     if(isBox(o0)||o0.type==='text'){rx=o0.x;ry=o0.y;}else if(o0.type==='angle'){rx=o0.vx;ry=o0.vy;}else{rx=o0.x1;ry=o0.y1;}
     let dx=dx0,dy=dy0;if(e.shiftKey){if(Math.abs(dx)>Math.abs(dy))dy=0;else dx=0;}
@@ -1192,6 +1333,10 @@ stage.addEventListener('pointermove',e=>{
     let ang=Math.atan2(P.y-c[1],P.x-c[0])/DEG+90;ang=((ang%360)+360)%360;if(e.shiftKey)ang=Math.round(ang/15)*15;else{const s=Math.round(ang/90)*90;if(Math.abs(ang-s)<4)ang=s;}if(ang>180)ang-=360;
     if(o.type==='text'){const b=textBox(o);const[u0,v0]=rot(b.x+b.w/2,b.y+b.h/2,ang*DEG);o.x=c[0]-u0;o.y=c[1]-v0;}
     o.rot=R2(ang);render();$('#stHint').textContent=`หมุน ${Math.round(ang)}°  ·  Shift = ทีละ 15°`;return;}
+  case'gscale':{const F=drag.F,C0=drag.C0;const kx=(P.x-F.x)/((C0.x-F.x)||1),ky=(P.y-F.y)/((C0.y-F.y)||1);const k=Math.max(.05,Math.max(kx,ky));
+    drag.origs.forEach(or=>{const cur=byId(or.id);if(!cur)return;Object.assign(cur,JSON.parse(JSON.stringify(or)));scaleObj(cur,or,F.x,F.y,k);});render();$('#stHint').textContent=`ย่อ/ขยายทั้งชุด ${Math.round(k*100)}%`;tip(`ขนาด ${Math.round(k*100)}%`);return;}
+  case'grot':{const C=drag.c;let d=(Math.atan2(P.y-C.y,P.x-C.x)-Math.atan2(drag.start.y-C.y,drag.start.x-C.x))/DEG;d=((d+540)%360)-180;if(e.shiftKey)d=Math.round(d/15)*15;else{const q=Math.round(d/90)*90;if(Math.abs(d-q)<3)d=q;}
+    drag.origs.forEach(or=>{const cur=byId(or.id);if(!cur)return;Object.assign(cur,JSON.parse(JSON.stringify(or)));rotObj(cur,C.x,C.y,d);});render();$('#stHint').textContent=`หมุนทั้งชุด ${Math.round(d)}°  ·  Shift = ทีละ 15°`;tip(`หมุน ${Math.round(d)}°`);return;}
   case'ts':{if(!o)return;const or=drag.orig;const d0=Math.hypot(drag.start.x-or.x,drag.start.y-or.y)||1,d1=Math.hypot(P.x-or.x,P.y-or.y);o.size=clamp(Math.round(or.size*d1/d0),6,200);render();return;}
   case'c':if(o){o.cx=snapV(P.x);o.cy=snapV(P.y);render();}return;
   case'av':case'a1':case'a2':case'acreate':{if(!o||o.type!=='angle')return;const k=drag.mode==='acreate'?'a1':drag.mode;const q=snapPt(P,e.shiftKey,k==='av'?null:{x:o.vx,y:o.vy});hoverAnchor=q.an||null;
@@ -1214,7 +1359,7 @@ function endDrag(e){if(!drag)return;const d=drag;drag=null;stage.classList.remov
   if(d.mode==='pan')return;
   if(d.moved){render();renderPanel();commit();}setTool(tool);}
 stage.addEventListener('pointerup',endDrag);stage.addEventListener('pointercancel',endDrag);
-stage.addEventListener('dblclick',e=>{const g=e.target.closest('#content g[data-id]');if(!g)return;const o=byId(g.dataset.id);if(!o)return;sel=[o.id];render();renderPanel();focusPanel(o.type==='text'?'text':'label',true);});
+stage.addEventListener('dblclick',e=>{if(multiTap)return;const el=document.elementFromPoint(e.clientX,e.clientY);const g=el&&el.closest&&el.closest('#content g[data-id]');if(!g)return;const o=byId(g.dataset.id);if(!o||o.lock)return;if(o.g&&isoGroup!==o.g){isoGroup=o.g;sel=[o.id];render();renderPanel();tip('แก้ไขภายในกลุ่ม — คลิกที่ว่างหรือกด Esc เพื่อออก');return;}sel=[o.id];render();renderPanel();focusPanel(o.type==='text'?'text':'label',true);});
 stage.addEventListener('wheel',e=>{e.preventDefault();const r=stage.getBoundingClientRect();
   if(e.ctrlKey||e.metaKey){zoomAt(Math.exp(-e.deltaY*.0022),e.clientX-r.left,e.clientY-r.top);}
   else{view.x-=e.deltaX;view.y-=e.deltaY;applyView();}},{passive:false});
@@ -1230,7 +1375,7 @@ const inField=()=>{const a=document.activeElement;return a&&(a.tagName==='INPUT'
 let pasteImageHandled=false;
 document.addEventListener('keydown',e=>{
   const mod=e.ctrlKey||e.metaKey,k=e.key.toLowerCase();
-  if(e.key==='Escape'){if(document.querySelector('.modal.show')){closeModals();return;}hideMenu();if(inField()){document.activeElement.blur();return;}if(drag)return;if(tool!=='select')setTool('select');else select([]);return;}
+  if(e.key==='Escape'){if(document.querySelector('.modal.show')){closeModals();return;}hideMenu();if(inField()){document.activeElement.blur();return;}if(drag)return;if(tool!=='select')setTool('select');else if(isoGroup){isoGroup=null;sel=expandIds(sel);render();renderPanel();}else select([]);return;}
   if(inField())return;
   if(e.code==='Space'&&!spaceDown){spaceDown=true;stage.classList.add('t-hand');e.preventDefault();return;}
   if(mod&&k==='z'){e.preventDefault();e.shiftKey?redo():undo();return;}
@@ -1245,7 +1390,7 @@ document.addEventListener('keydown',e=>{
   if(mod&&(k==='0')){e.preventDefault();fit();return;}
   if(mod&&(k==='='||k==='+')){e.preventDefault();zoomAt(1.2);return;}
   if(mod&&k==='-'){e.preventDefault();zoomAt(1/1.2);return;}
-  if(mod&&k==='g'){e.preventDefault();return;}
+  if(mod&&k==='g'){e.preventDefault();e.shiftKey?ungroupSel():groupSel();return;}
   if(mod)return;
   if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();delSel();return;}
   if(e.key.startsWith('Arrow')&&sel.length){e.preventDefault();const s=e.shiftKey?10:1;const dx=e.key==='ArrowLeft'?-s:e.key==='ArrowRight'?s:0,dy=e.key==='ArrowUp'?-s:e.key==='ArrowDown'?s:0;selObjs().forEach(o=>{moveObj(o,dx,dy);detach(o);});render();clearTimeout(window._nt);window._nt=setTimeout(()=>{commit();renderPanel();},400);return;}
@@ -1260,12 +1405,12 @@ document.addEventListener('paste',e=>{if(inField())return;const items=e.clipboar
 
 /* ---------- context menu ---------- */
 function showMenu(x,y){const m=$('#ctx');const has=sel.length>0;
-  m.innerHTML=has?`<button data-m="dup">ทำสำเนา<kbd>Ctrl+D</kbd></button><button data-m="copy">คัดลอก<kbd>Ctrl+C</kbd></button><button data-m="paste">วาง<kbd>Ctrl+V</kbd></button><hr><button data-m="front">นำมาไว้หน้าสุด<kbd>Shift+]</kbd></button><button data-m="fwd">เลื่อนขึ้นหนึ่งชั้น<kbd>]</kbd></button><button data-m="bwd">เลื่อนลงหนึ่งชั้น<kbd>[</kbd></button><button data-m="back">ส่งไปหลังสุด<kbd>Shift+[</kbd></button><hr><button data-m="rot">หมุน 90°<kbd>R</kbd></button><button data-m="fh">พลิกซ้าย–ขวา</button><hr><button data-m="del" class="dz">ลบ<kbd>Del</kbd></button>`
+  m.innerHTML=has?`${sel.length>1&&!isOneGroup()?'<button data-m="grp">จัดกลุ่ม<kbd>Ctrl+G</kbd></button>':''}${selGroups().length?'<button data-m="ungrp">ยกเลิกกลุ่ม<kbd>Ctrl+Shift+G</kbd></button>':''}${sel.length>1||selGroups().length?'<hr>':''}<button data-m="dup">ทำสำเนา<kbd>Ctrl+D</kbd></button><button data-m="copy">คัดลอก<kbd>Ctrl+C</kbd></button><button data-m="paste">วาง<kbd>Ctrl+V</kbd></button><hr><button data-m="front">นำมาไว้หน้าสุด<kbd>Shift+]</kbd></button><button data-m="fwd">เลื่อนขึ้นหนึ่งชั้น<kbd>]</kbd></button><button data-m="bwd">เลื่อนลงหนึ่งชั้น<kbd>[</kbd></button><button data-m="back">ส่งไปหลังสุด<kbd>Shift+[</kbd></button><hr><button data-m="rot">หมุน 90°<kbd>R</kbd></button><button data-m="fh">พลิกซ้าย–ขวา</button><hr><button data-m="del" class="dz">ลบ<kbd>Del</kbd></button>`
   :`<button data-m="paste">วาง<kbd>Ctrl+V</kbd></button><button data-m="all">เลือกทั้งหมด<kbd>Ctrl+A</kbd></button><button data-m="fit">พอดีหน้าจอ<kbd>Ctrl+0</kbd></button>`;
   m.classList.add('show');const r=m.getBoundingClientRect();m.style.left=Math.min(x,innerWidth-r.width-8)+'px';m.style.top=Math.min(y,innerHeight-r.height-8)+'px';}
 function hideMenu(){$('#ctx').classList.remove('show');}
 $('#ctx').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;const a=b.dataset.m;hideMenu();
-  ({dup:dupSel,copy:copySel,paste:pasteClip,del:delSel,front:()=>order('front'),back:()=>order('back'),fwd:()=>order('fwd'),bwd:()=>order('bwd'),all:()=>select(doc.objects.map(o=>o.id)),fit,
+  ({grp:groupSel,ungrp:ungroupSel,layers:()=>{setSideTab('layers');if(isMobile())openSheet('layers');},tpl:()=>openTpl(libSubj),img:()=>$('#btnImg').click(),open:()=>$('#btnOpen').click(),newdoc:()=>$('#btnNew').click(),mono:()=>{doc.style=doc.style==='mono'?undefined:'mono';syncStyleSw();render();commit();},dup:dupSel,copy:copySel,paste:pasteClip,del:delSel,front:()=>order('front'),back:()=>order('back'),fwd:()=>order('fwd'),bwd:()=>order('bwd'),all:()=>select(doc.objects.map(o=>o.id)),fit,
     rot:()=>{selObjs().forEach(o=>{if(isBox(o)||o.type==='text')o.rot=(((o.rot||0)+90+540)%360)-180;});render();renderPanel();commit();},
     fh:()=>{selObjs().forEach(o=>{if(isBox(o))o.fh=!o.fh;});render();commit();}})[a]();});
 document.addEventListener('pointerdown',e=>{if(!e.target.closest('#ctx'))hideMenu();});
@@ -1283,9 +1428,24 @@ const IC=(d,s=16)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="no
 const ACTS=`<div class="acts"><button class="ib" data-act="dup" title="ทำสำเนา (Ctrl+D)">${IC('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>')}</button><button class="ib" data-act="front" title="นำมาไว้หน้าสุด">${IC('<path d="M12 19V5M5 12l7-7 7 7"/>')}</button><button class="ib" data-act="back" title="ส่งไปหลังสุด">${IC('<path d="M12 5v14M19 12l-7 7-7-7"/>')}</button><button class="ib" data-act="del" title="ลบ (Delete)" style="color:#dc2626">${IC('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>')}</button></div>`;
 const LINE_NAME={measure:'ไม้วัดระยะ',straight:'เส้น / ลูกศร',elbow:'สายไฟ',curve:'ลูกศรโค้ง',spring:'สปริง',wave:'คลื่น'};
 
-function renderPanel(){const P=$('#props');const objs=selObjs();
+function renderPanel(){renderPanel0();const objs=selObjs();
+  if(objs.length===1&&objs[0].g&&groupMembers(objs[0].g).length>1)$('#props').insertAdjacentHTML('afterbegin',`<div class="sec" style="background:#f5f6ff;padding:8px 14px"><div class="row" style="justify-content:space-between"><span style="font-size:12px;color:var(--ink2)">อยู่ใน <b>${esc(groupName(objs[0].g))}</b></span><span style="display:flex;gap:4px"><button class="btn" style="height:26px;padding:0 8px;font-size:11.5px" data-act="gsel">เลือกทั้งกลุ่ม</button><button class="btn" style="height:26px;padding:0 8px;font-size:11.5px" data-act="gleave">นำออกจากกลุ่ม</button></span></div></div>`);
+  renderLayers();updSelbar();}
+const SEGB=(items)=>`<div class="seg">${items.map(([a,l,t])=>`<button data-act="${a}" title="${t||''}">${l}</button>`).join('')}</div>`;
+function multiPanel(objs){const one=isOneGroup(),gs=selGroups(),b=unionBox(objs);
+  return `<div class="ph"><div class="ttl">${one?esc(groupName(objs[0].g)):`เลือก ${objs.length} ชิ้น`}<div class="sub">${one?`กลุ่ม · ${objs.length} ชิ้น`:'หลายวัตถุ'}</div></div>${ACTS}</div>
+   <div class="sec"><h5>กลุ่ม</h5><div class="row">${one?'':`<button class="btn" data-act="grp" style="flex:1">${IC('<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/><path d="M11 7h4a2 2 0 0 1 2 2v4"/>')}จัดกลุ่ม</button>`}${gs.length?`<button class="btn" data-act="ungrp" style="flex:1">${IC('<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>')}ยกเลิกกลุ่ม</button>`:''}</div>
+   ${one?`<div class="row"><label class="f"><span style="padding-right:6px">ชื่อ</span><input data-gname value="${esc(groupName(objs[0].g))}"></label></div>`:''}
+   <div class="hint">${one?'ดับเบิลคลิกวัตถุเพื่อแก้ไขทีละชิ้นภายในกลุ่ม · Esc เพื่อออก':'จัดกลุ่ม (Ctrl+G) แล้วย้าย ย่อ/ขยาย และหมุนไปพร้อมกันได้'}</div></div>
+   <div class="sec"><h5>ขนาดและมุม</h5>
+   <div class="row"><span class="lab">ย่อ / ขยาย</span>${SEGB([['gs:0.75','−25%'],['gs:0.9','−10%'],['gs:1.1','+10%'],['gs:1.25','+25%']])}</div>
+   <div class="row"><span class="lab">หมุน</span>${SEGB([['gr:-90','↺ 90°'],['gr:-15','↺ 15°'],['gr:15','↻ 15°'],['gr:90','↻ 90°']])}</div>
+   <div class="row"><span class="lab">พลิก</span>${SEGB([['gfh','ซ้าย ↔ ขวา'],['gfv','บน ↕ ล่าง']])}</div>
+   <div class="hint">กรอบรวม ${Math.round(b.X-b.x)} × ${Math.round(b.Y-b.y)} px · ลากมุมกรอบเพื่อย่อ/ขยาย · ลากจุดกลมด้านบนเพื่อหมุน (Shift = ทีละ 15°)</div></div>
+   <div class="sec"><h5>ลำดับชั้น (เลเยอร์)</h5><div class="row">${SEGB([['front','หน้าสุด','Shift+]'],['fwd','ขึ้น 1 ชั้น',']'],['bwd','ลง 1 ชั้น','['],['back','หลังสุด','Shift+[']])}</div></div>`;}
+function renderPanel0(){const P=$('#props');const objs=selObjs();
   if(!objs.length){P.innerHTML=docPanel();return;}
-  if(objs.length>1){P.innerHTML=`<div class="ph"><div class="ttl">เลือก ${objs.length} ชิ้น</div>${ACTS}</div>
+  if(objs.length>1){P.innerHTML=multiPanel(objs)+`
    <div class="sec"><h5>จัดแนว</h5><div class="row">${segB('_al','',[['l',IC('<path d="M4 3v18M8 7h10M8 15h6"/>'),'ชิดซ้าย'],['c',IC('<path d="M12 3v18M6 7h12M8 15h8"/>'),'กึ่งกลางแนวนอน'],['r',IC('<path d="M20 3v18M6 7h10M10 15h6"/>'),'ชิดขวา'],['t',IC('<path d="M3 4h18M7 8v10M15 8v6"/>'),'ชิดบน'],['m',IC('<path d="M3 12h18M7 6v12M15 8v8"/>'),'กึ่งกลางแนวตั้ง'],['b',IC('<path d="M3 20h18M7 6v10M15 10v6"/>'),'ชิดล่าง']])}</div>
    <div class="row">${segB('_al','',[['dh','กระจายแนวนอน'],['dv','กระจายแนวตั้ง']])}</div></div>
    <div class="sec"><h5>สีทั้งหมดที่เลือก</h5>${colorRow('เส้น','stroke',objs[0].stroke||objs[0].color,PAL)}${colorRow('พื้น','fill',objs[0].fill,FPAL)}
@@ -1400,6 +1560,7 @@ function setProp(o,p,v){
   if(p==='kind'){o.kind=v;if(v==='curve'&&o.cx===undefined){o.cx=(o.x1+o.x2)/2;o.cy=(o.y1+o.y2)/2-40;}return;}
   o[p]=v;}
 props.addEventListener('input',e=>{const t=e.target;
+  if(t.hasAttribute('data-gname')){const o0=selObjs()[0];if(o0&&o0.g){doc.gnames=doc.gnames||{};doc.gnames[o0.g]=t.value;renderOverlay();renderLayers();}return;}
   if(t.dataset.doc){const k=t.dataset.doc;if(k==='w'||k==='h'){const v=parseInt(t.value);if(v>=100&&v<=6000){doc[k]=v;render();}}else if(k==='bg'){doc.bg=t.value;render();}else if(k==='uval'){const v=parseFloat(t.value);if(v>0){doc.uval=v;render();}}else if(k==='upx'){const v=parseFloat(t.value);if(v>0){doc.upx=v;render();}}else if(k==='uname'){doc.uname=t.value;render();}return;}
   if(t.dataset.fn){const[i,k]=t.dataset.fn.split('|');selObjs().forEach(o=>{if(o.type==='graph'&&o.fns[+i])o.fns[+i][k]=t.value;});render();return;}
   const p=t.dataset.p;if(!p)return;let v=t.type==='checkbox'?t.checked:(t.type==='number'||t.type==='range')?parseFloat(t.value):t.value;if(typeof v==='number'&&isNaN(v))return;
@@ -1407,6 +1568,7 @@ props.addEventListener('input',e=>{const t=e.target;
   const val=t.parentElement.querySelector('.val');if(val)val.textContent=(p==='op'||p==='lv')?Math.round(v*100)+'%':v;
   render();});
 props.addEventListener('change',e=>{const t=e.target;
+  if(t.hasAttribute('data-gname')){commit();return;}
   if(t.dataset.ui){ui[t.dataset.ui]=t.checked;render();queueSave();return;}
   if(t.dataset.doc==='preset'){const m={A4L:[1123,794],A4P:[794,1123],'169':[1280,720],wide:[1200,700],sq:[1000,1000]}[t.value];if(m){doc.w=m[0];doc.h=m[1];render();fit();commit();renderPanel();}return;}
   if(t.dataset.doc){commit();renderPanel();return;}
@@ -1432,6 +1594,11 @@ props.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)retu
   if(a.startsWith('rmfn:')){o.fns.splice(+a.slice(5),1);render();renderPanel();commit();return;}
   if(a==='addfn'){const cols=['#2563eb','#dc2626','#16a34a','#7c3aed','#ea580c','#0891b2'];o.fns.push({e:'',c:cols[o.fns.length%cols.length]});renderPanel();setTimeout(()=>{const f=props.querySelectorAll('[data-fn$="|e"]');f[f.length-1]&&f[f.length-1].focus();},20);return;}
   if(a==='fity'){fitY(o);render();renderPanel();commit();return;}
+  if(a.startsWith('gs:')){xformSel('s',+a.slice(3));return;}if(a.startsWith('gr:')){xformSel('r',+a.slice(3));return;}if(a==='gfh'||a==='gfv'){xformSel(a);return;}
+  if(a==='grp'){groupSel();return;}if(a==='ungrp'){ungroupSel();return;}
+  if(a==='gsel'){isoGroup=null;sel=expandIds([o.id]);render();renderPanel();return;}
+  if(a==='gleave'){delete o.g;isoGroup=null;render();renderPanel();commit();return;}
+  if(a==='fwd'||a==='bwd'){order(a);renderPanel();return;}
   switch(a){case'dup':dupSel();break;case'del':delSel();break;case'front':order('front');break;case'back':order('back');break;case'tpl':openTpl();break;
    case'rot90':selObjs().forEach(o=>o.rot=(((o.rot||0)+90+540)%360)-180);render();renderPanel();commit();break;
    case'fh':o.fh=!o.fh;render();renderPanel();commit();break;case'fv':o.fv=!o.fv;render();renderPanel();commit();break;
@@ -1439,6 +1606,88 @@ props.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)retu
    case'swapends':[o.x1,o.y1,o.x2,o.y2]=[o.x2,o.y2,o.x1,o.y1];[o.a1,o.a2]=[o.a2,o.a1];if(!o.a1)delete o.a1;if(!o.a2)delete o.a2;render();commit();break;
    case'detach':delete o.a1;delete o.a2;render();renderPanel();commit();break;
    case'flipLabel':o.lo=-(o.lo||1);render();commit();break;}});
+
+
+/* ---------- layers panel ---------- */
+let sideTab='props',layOpen={},layDrag=null;
+const EYE='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',EYEX='<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.2M6.6 6.6C3.6 8.5 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/>';
+const LOCK='<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',UNLOCK='<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/>';
+function objName(o){if(o.name)return o.name;if(o.type==='image')return 'รูปภาพ';if(o.type==='shape')return DEF[o.key]?DEF[o.key].name:o.key;
+  if(o.type==='text')return '“'+String(o.text).replace(/\s+/g,' ').slice(0,26)+'”';if(o.type==='line')return (o.kind==='bond'?'พันธะเคมี':o.kind==='straight'&&o.dotS?'เส้นชี้ป้าย':(LINE_NAME[o.kind]||'เส้น'))+(o.label?' '+String(o.label).slice(0,10):'');
+  if(o.type==='graph')return 'กราฟฟังก์ชัน';if(o.type==='angle')return 'มุม';if(TYPES[o.type])return TYPES[o.type].name+(o.el?' '+o.el:'');return o.type;}
+function objIcon(o){if(o.type==='shape'&&DEF[o.key])return thumb(DEF[o.key]);const k={text:ICON.text,line:o.kind==='elbow'?ICON.wire:ICON.line,angle:ICON.angle,graph:ICON.graph,image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>'}[o.type]||'<rect x="4" y="4" width="16" height="16" rx="3"/>';return IC(k,16);}
+function entities(){const E=[],seen=new Set();for(let i=doc.objects.length-1;i>=0;i--){const o=doc.objects[i];if(o.g&&groupMembers(o.g).length>1){if(seen.has(o.g))continue;seen.add(o.g);E.push({k:'g:'+o.g,g:o.g,objs:groupMembers(o.g)});}else E.push({k:'o:'+o.id,objs:[o]});}return E;}
+function renderLayers(){const L=$('#layers');if(!L)return;$('#layCount').textContent=doc.objects.length?`(${doc.objects.length})`:'';if(sideTab!=='layers'||layDrag)return;
+  const S=new Set(sel);const row=(o,mem)=>`<div class="lr${S.has(o.id)?' on':''}${o.hide?' off':''}${mem?' mem':''}" data-lid="${o.id}"><span class="hd" data-ldrag title="ลากเพื่อเปลี่ยนลำดับ">⋮⋮</span><button class="li${o.hide?' act':''}" data-lvis title="ซ่อน/แสดง">${IC(o.hide?EYEX:EYE,15)}</button><span class="lic">${objIcon(o)}</span><span class="ln">${esc(objName(o))}</span><button class="li${o.lock?' act':''}" data-llock title="ล็อก (คลิกบนแผ่นงานไม่ได้)">${IC(o.lock?LOCK:UNLOCK,15)}</button></div>`;
+  let h='';for(const e of entities()){if(!e.g){h+=row(e.objs[0],false);continue;}const m=e.objs,on=m.every(o=>S.has(o.id)),hid=m.every(o=>o.hide),lk=m.every(o=>o.lock),op=layOpen[e.g];
+    h+=`<div class="lr grp${on?' on':''}${hid?' off':''}" data-lg="${e.g}"><span class="hd" data-ldrag title="ลากเพื่อเปลี่ยนลำดับ">⋮⋮</span><button class="li${hid?' act':''}" data-lvis>${IC(hid?EYEX:EYE,15)}</button><button class="li" data-lcaret title="แสดงสมาชิก">${IC(op?'<path d="m6 9 6 6 6-6"/>':'<path d="m9 6 6 6-6 6"/>',15)}</button><span class="ln">${esc(groupName(e.g))} <span style="color:var(--faint);font-weight:400">· ${m.length}</span></span><button class="li${lk?' act':''}" data-llock>${IC(lk?LOCK:UNLOCK,15)}</button></div>`;
+    if(op)for(let i=m.length-1;i>=0;i--)h+=row(m[i],true);}
+  L.innerHTML=`<div class="lhint">บนสุด = อยู่หน้าสุด · ลาก ⋮⋮ เพื่อเปลี่ยนลำดับ · ดับเบิลคลิกชื่อเพื่อเปลี่ยนชื่อ</div>`+(h||'<div class="empty-note">ยังไม่มีวัตถุ</div>');}
+function setSideTab(t){sideTab=t;document.querySelectorAll('#ptabs [data-pt]').forEach(b=>b.classList.toggle('on',b.dataset.pt===t));$('#props').hidden=t!=='props';$('#layers').hidden=t!=='layers';renderLayers();if(isMobile())document.querySelectorAll('#mnav [data-sheet]').forEach(b=>b.classList.toggle('on',$('#side').classList.contains('open')&&b.dataset.sheet===t));}
+$('#ptabs').addEventListener('click',e=>{const b=e.target.closest('[data-pt]');if(b)setSideTab(b.dataset.pt);});
+const layEnt=el=>{const r=el.closest('.lr');if(!r)return null;if(r.dataset.lg)return {g:r.dataset.lg,objs:groupMembers(r.dataset.lg),r};const o=byId(r.dataset.lid);return o?{o,objs:[o],r}:null;};
+$('#layers').addEventListener('click',e=>{const t=layEnt(e.target);if(!t)return;
+  if(e.target.closest('[data-lcaret]')){layOpen[t.g]=!layOpen[t.g];renderLayers();return;}
+  if(e.target.closest('[data-lvis]')){const v=!t.objs.every(o=>o.hide);t.objs.forEach(o=>{if(v)o.hide=true;else delete o.hide;});render();commit();return;}
+  if(e.target.closest('[data-llock]')){const v=!t.objs.every(o=>o.lock);t.objs.forEach(o=>{if(v)o.lock=true;else delete o.lock;});render();commit();return;}
+  if(e.target.closest('[data-ldrag]')||e.target.closest('input'))return;
+  const ids=t.objs.map(o=>o.id);if(t.o&&t.o.g)isoGroup=t.o.g;else if(t.g)isoGroup=null;
+  if(e.shiftKey||e.metaKey||e.ctrlKey||multiTap){const all=ids.every(id=>sel.includes(id));sel=all?sel.filter(id=>!ids.includes(id)):[...new Set([...sel,...ids])];}else sel=ids;render();renderPanel();});
+$('#layers').addEventListener('dblclick',e=>{const t=layEnt(e.target);if(!t||!e.target.closest('.ln'))return;const ln=t.r.querySelector('.ln');const cur=t.g?groupName(t.g):objName(t.o);
+  ln.innerHTML=`<input value="${esc(cur)}">`;const inp=ln.querySelector('input');inp.focus();inp.select();
+  const done=ok=>{if(ok){const v=inp.value.trim();if(t.g){doc.gnames=doc.gnames||{};if(v)doc.gnames[t.g]=v;else delete doc.gnames[t.g];}else{if(v&&v!==objName(Object.assign({},t.o,{name:''})))t.o.name=v;else delete t.o.name;}commit();}renderLayers();renderPanel();renderOverlay();};
+  inp.addEventListener('keydown',k=>{if(k.key==='Enter'){k.preventDefault();inp.blur();}if(k.key==='Escape'){inp.dataset.x=1;inp.blur();}});inp.addEventListener('blur',()=>done(!inp.dataset.x));});
+$('#layers').addEventListener('pointerdown',e=>{const h=e.target.closest('[data-ldrag]');if(!h)return;const t=layEnt(h);if(!t)return;e.preventDefault();h.setPointerCapture(e.pointerId);
+  layDrag={t,key:t.g?'g:'+t.g:'o:'+t.o.id,inGroup:t.o&&t.o.g&&t.r.classList.contains('mem')?t.o.g:null,target:null,after:false};t.r.classList.add('dragging');});
+$('#layers').addEventListener('pointermove',e=>{if(!layDrag)return;$('#layers').querySelectorAll('.drop-a,.drop-b').forEach(x=>x.classList.remove('drop-a','drop-b'));
+  const el=document.elementFromPoint(e.clientX,e.clientY);const r=el&&el.closest('#layers .lr');if(!r||r===layDrag.t.r){layDrag.target=null;return;}
+  const rc=r.getBoundingClientRect();const after=e.clientY>rc.top+rc.height/2;layDrag.target=r;layDrag.after=after;r.classList.add(after?'drop-a':'drop-b');
+  const L=$('#layers'),lr=L.getBoundingClientRect();if(e.clientY<lr.top+30)L.scrollTop-=8;else if(e.clientY>lr.bottom-30)L.scrollTop+=8;});
+function layDrop(){const d=layDrag;layDrag=null;if(!d||!d.target){renderLayers();return;}const tr=d.target;
+  if(d.inGroup){const tid=tr.dataset.lid,to=byId(tid);if(to&&to.g===d.inGroup&&tid!==d.t.o.id){const mem=groupMembers(d.inGroup),pos=doc.objects.map((o,i)=>o.g===d.inGroup?i:-1).filter(i=>i>=0);
+      const top=mem.slice().reverse().filter(o=>o.id!==d.t.o.id);let ti=top.findIndex(o=>o.id===tid);if(d.after)ti++;top.splice(ti,0,d.t.o);const bot=top.reverse();pos.forEach((p,i)=>doc.objects[p]=bot[i]);render();renderPanel();commit();return;}}
+  const E=entities();const from=E.findIndex(x=>x.k===d.key);if(from<0){renderLayers();return;}const te=tr.dataset.lg?'g:'+tr.dataset.lg:(()=>{const o=byId(tr.dataset.lid);return o&&o.g&&groupMembers(o.g).length>1?'g:'+o.g:'o:'+tr.dataset.lid;})();
+  if(te===d.key){renderLayers();return;}const[it]=E.splice(from,1);let ti=E.findIndex(x=>x.k===te);if(ti<0){renderLayers();return;}if(d.after)ti++;E.splice(ti,0,it);
+  doc.objects=E.slice().reverse().flatMap(x=>x.objs);render();renderPanel();commit();}
+$('#layers').addEventListener('pointerup',()=>{if(layDrag)layDrop();});$('#layers').addEventListener('pointercancel',()=>{layDrag=null;renderLayers();});
+
+/* ---------- mobile: bottom sheets, selection bar, more menu ---------- */
+const isMobile=()=>matchMedia('(max-width:760px)').matches;
+function openSheet(w){const lib=w==='lib',side=w==='props'||w==='layers';$('#lib').classList.toggle('open',lib);$('#side').classList.toggle('open',side);if(side)setSideTab(w);
+  document.querySelectorAll('#mnav [data-sheet]').forEach(b=>b.classList.toggle('on',b.dataset.sheet===w));}
+document.addEventListener('click',e=>{if(e.target.closest('[data-close-sheet]'))openSheet(null);});
+$('#mnav').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.sheet){const open=b.classList.contains('on');openSheet(open?null:b.dataset.sheet);return;}
+  if(b.hasAttribute('data-multi')){multiTap=!multiTap;b.classList.toggle('on',multiTap);tip(multiTap?'โหมดเลือกหลายชิ้น: แตะวัตถุเพื่อเพิ่ม/ถอดออกจากการเลือก':'ปิดโหมดเลือกหลายชิ้น');return;}
+  if(b.hasAttribute('data-mtpl')){openSheet(null);openTpl(libSubj);}});
+function updSelbar(){const b=$('#selbar');if(!b)return;const n=sel.length;b.classList.toggle('show',n>0&&isMobile()&&!$('#side').classList.contains('open'));if(!n)return;
+  const it=(a,ic,l,c='')=>`<button data-sb="${a}" class="${c}">${IC(ic,18)}<span>${l}</span></button>`;
+  b.innerHTML=it('edit','<path d="M4 20h4L19 9l-4-4L4 16z"/>','แก้ไข')+(n>1&&!isOneGroup()?it('grp','<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/><path d="M11 7h4a2 2 0 0 1 2 2v4"/>','จัดกลุ่ม'):'')+(selGroups().length?it('ungrp','<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>','ยกเลิกกลุ่ม'):'')
+   +it('dup','<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>','สำเนา')+it('fwd','<path d="M12 19V5M5 12l7-7 7 7"/>','ขึ้นชั้น')+it('bwd','<path d="M12 5v14M5 12l7 7 7-7"/>','ลงชั้น')+it('rot','<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>','หมุน 90°')+it('del','<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>','ลบ','dz');}
+$('#selbar').addEventListener('click',e=>{const b=e.target.closest('[data-sb]');if(!b)return;const a=b.dataset.sb;
+  ({edit:()=>openSheet('props'),grp:groupSel,ungrp:ungroupSel,dup:dupSel,fwd:()=>order('fwd'),bwd:()=>order('bwd'),del:delSel,
+    rot:()=>{if(sel.length>1)xformSel('r',90);else{selObjs().forEach(o=>{if(isBox(o)||o.type==='text')o.rot=(((o.rot||0)+90+540)%360)-180;});render();renderPanel();commit();}}})[a]();updSelbar();});
+$('#btnMore').addEventListener('click',e=>{e.stopPropagation();const m=$('#ctx');
+  m.innerHTML=`<button data-m="tpl">แม่แบบ</button><button data-m="img">แทรกรูปภาพ</button><button data-m="open">เปิดไฟล์ .json</button><button data-m="newdoc">แผ่นงานใหม่</button><hr><button data-m="mono">${doc.style==='mono'?'กลับเป็นแบบสี':'แบบขาวดำเชิงวิชาการ'}</button><button data-m="layers">เลเยอร์</button>`;
+  m.classList.add('show');const r=m.getBoundingClientRect(),br=e.currentTarget.getBoundingClientRect();m.style.left=Math.max(8,Math.min(br.right-r.width,innerWidth-r.width-8))+'px';m.style.top=(br.bottom+6)+'px';});
+
+/* ---------- touch: two-finger pinch zoom / pan, long-press menu ---------- */
+const ptrs=new Map();let lpT=null;
+function cancelDragForGesture(){if(!drag)return;if(drag.origs)drag.origs.forEach(or=>{const cur=byId(or.id);if(cur)Object.assign(cur,JSON.parse(JSON.stringify(or)));});
+  if(drag.mode==='marq'){sel=drag.keep||[];$('#marq').setAttribute('display','none');}
+  if(drag.mode==='create'||drag.mode==='acreate'){const o=byId(sel[0]);if(o){doc.objects=doc.objects.filter(x=>x.id!==o.id);sel=[];}}
+  if(drag.mode==='resize'||drag.mode==='rot'){const o=byId(sel[0]);if(o&&drag.orig)Object.assign(o,JSON.parse(JSON.stringify(drag.orig)));}drag=null;render();}
+stage.addEventListener('pointerdown',e=>{ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});clearTimeout(lpT);
+  if(ptrs.size===2){cancelDragForGesture();const[a,b]=[...ptrs.values()];const r=stage.getBoundingClientRect();drag={mode:'pinch',d0:Math.hypot(a.x-b.x,a.y-b.y)||1,c0:{x:(a.x+b.x)/2-r.left,y:(a.y+b.y)/2-r.top},z0:view.z,vx:view.x,vy:view.y};
+    try{stage.setPointerCapture(e.pointerId);}catch(_){}e.stopImmediatePropagation();return;}
+  if(ptrs.size>2){e.stopImmediatePropagation();return;}
+  if(e.pointerType==='touch'){const x=e.clientX,y=e.clientY;lpT=setTimeout(()=>{if(ptrs.size!==1||!drag||drag.moved&&drag.mode!=='marq')return;const p=[...ptrs.values()][0];if(Math.hypot(p.x-x,p.y-y)>10)return;
+    const g=document.elementFromPoint(x,y);const gg=g&&g.closest&&g.closest('#content g[data-id]');cancelDragForGesture();if(gg&&!sel.includes(gg.dataset.id)){sel=expandIds([gg.dataset.id]);render();renderPanel();}showMenu(x,y);},560);}},{capture:true});
+stage.addEventListener('pointermove',e=>{if(ptrs.has(e.pointerId))ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(drag&&drag.mode==='pinch'){if(ptrs.size<2){e.stopImmediatePropagation();return;}const[a,b]=[...ptrs.values()];const r=stage.getBoundingClientRect();const d=Math.hypot(a.x-b.x,a.y-b.y)||1,c={x:(a.x+b.x)/2-r.left,y:(a.y+b.y)/2-r.top};
+    const z=clamp(drag.z0*d/drag.d0,.1,8),wx=(drag.c0.x-drag.vx)/drag.z0,wy=(drag.c0.y-drag.vy)/drag.z0;view.z=z;view.x=c.x-wx*z;view.y=c.y-wy*z;applyView();e.stopImmediatePropagation();}},{capture:true});
+const ptrEnd=e=>{ptrs.delete(e.pointerId);clearTimeout(lpT);if(drag&&drag.mode==='pinch'){if(ptrs.size===0)drag=null;e.stopImmediatePropagation();}};
+stage.addEventListener('pointerup',ptrEnd,{capture:true});stage.addEventListener('pointercancel',ptrEnd,{capture:true});
 
 /* ---------- library UI ---------- */
 function thumb(d){const pad=6,s=Math.max(d.w,d.h)+pad*2;const sc=62/s;const p={s:d.stroke,f:d.fill,sw:1.4*(d.sw/2)/sc,lv:d.lv,liq:d.liq,tag:d.tag};let b='';try{b=d.draw(p);}catch(e){}
@@ -1448,18 +1697,23 @@ const subjCats=()=>[...CATS.filter(c=>catSubj(c[0])===libSubj),...CATS.filter(c=
 function buildChips(){const cats=subjCats();$('#chips').innerHTML=[['all','ทั้งหมด'],...cats.map(c=>[c[0],c[1]])].map(([k,n])=>`<button class="chip ${libFilter===k?'on':''}" data-c="${k}">${n}</button>`).join('');}
 const card=d=>`<div class="item${libSel===d.key?' on':''}" draggable="true" data-k="${d.key}" title="${esc(d.name)} · ${esc(d.en)}">${thumb(d)}<span>${esc(d.name)}</span><button class="fav${libStore.fav.includes(d.key)?' on':''}" data-fav="${d.key}" aria-label="รายการโปรด">${libStore.fav.includes(d.key)?'★':'☆'}</button></div>`;
 function buildLib(){const q=$('#q').value.trim().toLowerCase();let h='';
-  if(!q&&libFilter==='all'){const sec=(t,keys)=>{const ds=keys.map(k=>DEF[k]).filter(Boolean);return ds.length?`<div class="cat"><h4>${t} <span>${ds.length}</span></h4><div class="grid3">${ds.map(card).join('')}</div></div>`:'';};
-    h+=sec('★ รายการโปรด',libStore.fav)+sec('ใช้ล่าสุด',libStore.recent);
+  const col=libStore.col||(libStore.col={});const CH='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+  const head=(k,t,n)=>`<button class="cath${!q&&col[k]?' col':''}" data-cat="${k}">${CH}${t}<em>${n}</em></button>`;
+  if(!q&&libFilter==='all'){const sec=(k,t,keys)=>{const ds=keys.map(k=>DEF[k]).filter(Boolean);return ds.length?`<div class="cat">${head(k,t,ds.length)}${col[k]?'':`<div class="grid3">${ds.map(card).join('')}</div>`}</div>`:'';};
+    h+=`<div class="libtools"><button data-colall="1">ย่อทั้งหมด</button><button data-colall="0">ขยายทั้งหมด</button></div>`;
+    h+=sec('_fav','★ รายการโปรด',libStore.fav)+sec('_rec','ใช้ล่าสุด',libStore.recent);
     if(!CATS.some(c=>catSubj(c[0])===libSubj))h+=`<div class="soon"><b>${libSubj==='bio'?'ชีววิทยา':'ดาราศาสตร์'} — กำลังพัฒนา</b><span>หมวดนี้จะเพิ่มในเฟส ${libSubj==='bio'?3:4} ระหว่างนี้ใช้หมวดทั่วไปด้านล่าง หรือค้นหาวัตถุจากทุกสาขาได้</span></div>`;}
   for(const[c,n,en]of (q?CATS:subjCats())){if(libFilter!=='all'&&libFilter!==c)continue;const items=LIB.filter(d=>d.cat===c&&(!q||(d.name+' '+d.en+' '+d.key+' '+d.al).toLowerCase().includes(q)));if(!items.length)continue;
     const wb=c==='elec'?`<div class="wirebar"><button data-tool="wire_s" title="ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว (W)">${IC(ICON.wire_s,16)}สายไฟตรง</button><button data-tool="wire" title="สายไฟหักมุมฉาก (E)">${IC(ICON.wire,16)}สายหักมุม</button></div>`:'';
-    h+=`<div class="cat"><h4>${n} <span>${items.length}</span></h4>${wb}<div class="grid3">${items.map(card).join('')}</div></div>`;}
+    const shut=!q&&libFilter==='all'&&col[c];h+=`<div class="cat">${head(c,n,items.length)}${shut?'':wb+`<div class="grid3">${items.map(card).join('')}</div>`}</div>`;}
   $('#libbody').innerHTML=h||`<div class="empty-note">ไม่พบอุปกรณ์ “${esc(q)}”</div>`;}
 $('#subj').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(!b)return;libSubj=b.dataset.s;libFilter='all';libStore.subj=libSubj;saveLibStore();buildSubj();buildChips();buildLib();$('#libbody').scrollTop=0;});
 $('#chips').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;libFilter=b.dataset.c;buildChips();buildLib();});
 $('#q').addEventListener('input',buildLib);
 let cascade=0;
-$('#libbody').addEventListener('click',e=>{const fv=e.target.closest('[data-fav]');if(fv){e.stopPropagation();const k=fv.dataset.fav;libStore.fav=libStore.fav.includes(k)?libStore.fav.filter(x=>x!==k):[...libStore.fav,k];saveLibStore();buildLib();return;}const tb=e.target.closest('[data-tool]');if(tb){setTool(tb.dataset.tool);tip(LP[tb.dataset.tool].n+': ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว');return;}const it=e.target.closest('.item');if(!it)return;markLib(it);const c=viewCenter();cascade=(cascade+1)%6;addShapeAt(it.dataset.k,c.x+cascade*20-50,c.y+cascade*20-50);});
+$('#libbody').addEventListener('click',e=>{const ch=e.target.closest('[data-cat]');if(ch){const col=libStore.col||(libStore.col={});col[ch.dataset.cat]=!col[ch.dataset.cat];saveLibStore();buildLib();return;}
+  const ca=e.target.closest('[data-colall]');if(ca){const v=ca.dataset.colall==='1';libStore.col={};if(v){['_fav','_rec',...subjCats().map(c=>c[0])].forEach(k=>libStore.col[k]=true);}saveLibStore();buildLib();return;}
+  const fv=e.target.closest('[data-fav]');if(fv){e.stopPropagation();const k=fv.dataset.fav;libStore.fav=libStore.fav.includes(k)?libStore.fav.filter(x=>x!==k):[...libStore.fav,k];saveLibStore();buildLib();return;}const tb=e.target.closest('[data-tool]');if(tb){setTool(tb.dataset.tool);tip(LP[tb.dataset.tool].n+': ลากจากขั้วอุปกรณ์หนึ่งไปอีกขั้ว');return;}const it=e.target.closest('.item');if(!it)return;markLib(it);const c=viewCenter();cascade=(cascade+1)%6;addShapeAt(it.dataset.k,c.x+cascade*20-50,c.y+cascade*20-50);if(isMobile())openSheet(null);});
 function markLib(it){libSel=it.dataset.k;document.querySelectorAll('#libbody .item.on').forEach(x=>x.classList.remove('on'));it.classList.add('on');}
 $('#libbody').addEventListener('dragstart',e=>{const it=e.target.closest('.item');if(!it)return;markLib(it);e.dataTransfer.setData('text/x-physidraw',it.dataset.k);e.dataTransfer.setData('text/plain',DEF[it.dataset.k].name);e.dataTransfer.effectAllowed='copy';});
 
@@ -1604,7 +1858,7 @@ function init(){
   if(saved&&saved.doc&&Array.isArray(saved.doc.objects)){doc=Object.assign(newDoc(),saved.doc);if(saved.ui)ui=Object.assign(ui,saved.ui);}else doc=T_lens();
   $('#docname').value=doc.name||'';syncStyleSw();
   setTool('select');render();renderPanel();requestAnimationFrame(()=>{fit();render();});commit();
-  addEventListener('resize',()=>renderOverlay());
+  addEventListener('resize',()=>{renderOverlay();updSelbar();});setSideTab('props');
 }
 document.addEventListener('DOMContentLoaded',init);
 </script>
